@@ -6,6 +6,9 @@ from src.agents.planner import PlanningAgent
 from src.agents.supervisor import SupervisorAgent
 from src.agents.task_agents.financial import FinancialAgent
 from src.agents.task_agents.legal import LegalAgent
+from src.agents.task_agents.research import ResearchAgent
+from src.agents.task_agents.osint import OSINTAgent
+from src.agents.task_agents.verification import VerificationAgent
 from src.state.definitions import ResearchTask
 
 
@@ -100,3 +103,106 @@ async def test_legal_agent_task_execution():
         assert result["task_id"] == task.id
         assert isinstance(result["confidence"], float)
         assert 0.0 <= result["confidence"] <= 1.0
+
+@pytest.mark.asyncio
+async def test_research_agent_creation():
+    """Test research agent creation with Exa-first configuration"""
+    with patch('langchain_openai.ChatOpenAI'):
+        research = ResearchAgent()
+        agent = research.create_agent()
+        assert agent is not None
+        # Should have multiple tools (5 Exa + 1 Tavily, or fallback dummy)
+        assert len(research.tools) >= 1
+
+
+@pytest.mark.asyncio
+async def test_research_agent_task_execution():
+    """Test research agent task execution"""
+    with patch('langchain_openai.ChatOpenAI'):
+        research = ResearchAgent()
+
+        # Create a sample task
+        task = ResearchTask(
+            description="Research Tesla Inc company overview",
+            assigned_agent="research",
+            output_schema={"findings": "str", "summary": "str"}
+        )
+
+        # Execute task
+        result = await research.execute_task(task, "Tesla Inc comprehensive research")
+
+        assert "task_id" in result
+        assert "results" in result
+        assert "citations" in result
+        assert "confidence" in result
+        assert result["task_id"] == task.id
+        assert isinstance(result["confidence"], float)
+        assert 0.0 <= result["confidence"] <= 1.0
+
+
+@pytest.mark.asyncio
+async def test_osint_agent_creation():
+    """Test OSINT agent creation with comprehensive digital investigation tools"""
+    with patch('langchain_openai.ChatOpenAI'):
+        osint = OSINTAgent()
+        agent = osint.create_agent()
+        assert agent is not None
+        # Should have multiple tools for OSINT investigation
+        assert len(osint.tools) >= 1
+
+
+@pytest.mark.asyncio
+async def test_osint_agent_task_execution():
+    """Test OSINT agent task execution"""
+    with patch('langchain_openai.ChatOpenAI'):
+        osint = OSINTAgent()
+
+        # Create a sample task
+        task = ResearchTask(
+            description="OSINT investigation of Tesla Inc digital footprint",
+            assigned_agent="osint",
+            output_schema={"digital_presence": "dict", "reputation_analysis": "dict"}
+        )
+
+        # Execute task
+        result = await osint.execute_task(task, "Tesla Inc OSINT analysis")
+
+        assert "task_id" in result
+        assert "results" in result
+        assert "citations" in result
+        assert "confidence" in result
+        assert result["task_id"] == task.id
+
+
+@pytest.mark.asyncio
+async def test_verification_agent_creation():
+    """Test verification agent creation with fact-checking capabilities"""
+    with patch('langchain_openai.ChatOpenAI'):
+        verification = VerificationAgent()
+        agent = verification.create_agent()
+        assert agent is not None
+        # Should have multiple tools for verification and fact-checking
+        assert len(verification.tools) >= 1
+
+
+@pytest.mark.asyncio
+async def test_verification_agent_task_execution():
+    """Test verification agent task execution"""
+    with patch('langchain_openai.ChatOpenAI'):
+        verification = VerificationAgent()
+
+        # Create a sample task
+        task = ResearchTask(
+            description="Verify financial claims about Tesla Inc",
+            assigned_agent="verification",
+            output_schema={"verification_results": "dict", "confidence_scores": "dict"}
+        )
+
+        # Execute task
+        result = await verification.execute_task(task, "Tesla Inc fact verification")
+
+        assert "task_id" in result
+        assert "results" in result
+        assert "citations" in result
+        assert "confidence" in result
+        assert result["task_id"] == task.id
