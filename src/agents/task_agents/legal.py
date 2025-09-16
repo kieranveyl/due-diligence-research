@@ -1,6 +1,8 @@
 from typing import Any
 
 from langchain_core.tools import tool
+from langchain_exa import ExaSearchResults, ExaFindSimilarResults
+from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -21,51 +23,122 @@ class LegalAgent:
     def _initialize_tools(self):
         tools = []
 
-        # Add legal research tools
-        @tool
-        def legal_database_search(query: str, jurisdiction: str = "US") -> str:
-            """Search legal databases for case law, statutes, and regulatory information"""
-            # Mock implementation - would integrate with legal databases like Westlaw, LexisNexis
-            return f"Legal database search for: {query} in jurisdiction: {jurisdiction}"
+        # Add comprehensive Exa tools for legal research
+        if settings.has_exa_key:
+            try:
+                # Comprehensive legal document neural search
+                tools.append(ExaSearchResults(
+                    name="exa_legal_comprehensive",
+                    description="Large-scale legal research with full content from courts, regulators, and legal sources. For thorough legal due diligence.",
+                    num_results=35,
+                    api_key=settings.exa_api_key,
+                    include_domains=[
+                        "courtlistener.com", "justia.com", "findlaw.com", 
+                        "sec.gov", "ftc.gov", "justice.gov", "uscourts.gov",
+                        "supremecourt.gov", "law.cornell.edu", "caselaw.findlaw.com"
+                    ],
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Court records and case law search
+                tools.append(ExaSearchResults(
+                    name="exa_court_records",
+                    description="Deep search for court records, case law, and judicial decisions with full content",
+                    num_results=20,
+                    api_key=settings.exa_api_key,
+                    include_domains=[
+                        "courtlistener.com", "justia.com", "uscourts.gov",
+                        "supremecourt.gov", "pacer.gov", "ca9.uscourts.gov"
+                    ],
+                    type="auto",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Regulatory and compliance search
+                tools.append(ExaSearchResults(
+                    name="exa_regulatory_compliance",
+                    description="Search regulatory filings, compliance updates, and enforcement actions with full content",
+                    num_results=18,
+                    api_key=settings.exa_api_key,
+                    include_domains=[
+                        "sec.gov", "ftc.gov", "justice.gov", "cftc.gov",
+                        "occ.gov", "federalregister.gov", "regulations.gov"
+                    ],
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Legal keyword search for precise terms
+                tools.append(ExaSearchResults(
+                    name="exa_legal_keyword",
+                    description="Precise keyword search for specific legal terms, case citations, or statute numbers",
+                    num_results=12,
+                    api_key=settings.exa_api_key,
+                    type="keyword",
+                    text_contents_options=True
+                ))
+                
+                # Find similar legal documents for precedent research
+                tools.append(ExaFindSimilarResults(
+                    name="exa_find_similar_legal",
+                    description="Find similar legal documents, cases, and precedents for expanded legal analysis",
+                    num_results=10,
+                    api_key=settings.exa_api_key,
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                print("✅ Advanced Exa legal tool suite initialized successfully")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Exa legal tools: {e}")
 
-        @tool
-        def compliance_check(entity_name: str, industry: str = "", regulations: str = "") -> str:
-            """Check regulatory compliance status and potential violations"""
-            # Mock implementation - would integrate with regulatory databases
-            return f"Compliance check for {entity_name} in {industry}, regulations: {regulations}"
+        # Add minimal Tavily for urgent legal breaking news only
+        if settings.has_tavily_key:
+            try:
+                tools.append(TavilySearchResults(
+                    name="tavily_urgent_legal_news",
+                    description="ONLY for urgent legal breaking news and immediate court decisions within hours. Use minimally - Exa is primary source.",
+                    max_results=3,
+                    api_wrapper_kwargs={"api_key": settings.tavily_api_key}
+                ))
+                print("✅ Tavily auxiliary legal tool initialized")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Tavily legal tool: {e}")
 
-        @tool
-        def litigation_search(entity_name: str, court_level: str = "all") -> str:
-            """Search for active and historical litigation involving the entity"""
-            # Mock implementation - would integrate with court record systems
-            return f"Litigation search for {entity_name}, court level: {court_level}"
-
-        @tool
-        def regulatory_filing_search(entity_name: str, filing_type: str = "all") -> str:
-            """Search regulatory filings and compliance documents"""
-            # Mock implementation - would integrate with regulatory filing systems
-            return f"Regulatory filing search for {entity_name}, type: {filing_type}"
-
+        # Add specialized legal tools that don't have public APIs as mock implementations
         @tool
         def sanctions_screening(entity_name: str, lists: str = "OFAC,EU,UN") -> str:
             """Screen entity against sanctions lists and watch lists"""
             # Mock implementation - would integrate with sanctions screening services
-            return f"Sanctions screening for {entity_name} against lists: {lists}"
+            return f"Mock sanctions screening for {entity_name} against lists: {lists} - Status: Clear"
+
+        @tool  
+        def litigation_database_search(entity_name: str, court_level: str = "all") -> str:
+            """Search specialized litigation databases for case records"""
+            # Mock implementation - would integrate with Westlaw, LexisNexis, etc.
+            return f"Mock litigation database search for {entity_name}, court level: {court_level}"
 
         @tool
-        def intellectual_property_search(entity_name: str, ip_type: str = "all") -> str:
-            """Search for patents, trademarks, and other intellectual property"""
-            # Mock implementation - would integrate with IP databases
-            return f"IP search for {entity_name}, type: {ip_type}"
+        def compliance_regulatory_check(entity_name: str, industry: str = "", regulations: str = "") -> str:
+            """Check regulatory compliance status across multiple agencies"""  
+            # Mock implementation - would integrate with regulatory databases
+            return f"Mock compliance check for {entity_name} in {industry}, regulations: {regulations}"
 
-        tools.extend([
-            legal_database_search,
-            compliance_check,
-            litigation_search,
-            regulatory_filing_search,
-            sanctions_screening,
-            intellectual_property_search
-        ])
+        tools.extend([sanctions_screening, litigation_database_search, compliance_regulatory_check])
+
+        # Add fallback tools if no APIs available
+        if not any(tool.name in ['legal_documents_search', 'legal_news_search'] for tool in tools):
+            @tool
+            def dummy_legal_search(query: str, legal_area: str = "") -> str:
+                """Dummy legal search tool for development/testing"""
+                return f"Mock legal search results for: {query} | Legal area: {legal_area}"
+
+            tools.append(dummy_legal_search)
+            print("⚠️ Using dummy legal tools - configure API keys for real functionality")
 
         return tools
 
@@ -75,20 +148,44 @@ class LegalAgent:
             tools=self.tools,
             prompt="""You are a legal research and compliance specialist focused on comprehensive legal due diligence.
 
-            Your responsibilities:
-            1. Research legal history, litigation, and regulatory compliance
-            2. Analyze regulatory filings and compliance status
-            3. Identify legal risks, sanctions, and regulatory violations
-            4. Review corporate governance and legal structure
-            5. Assess intellectual property portfolios and disputes
-            6. Evaluate contract disputes and legal obligations
-            7. Screen against sanctions lists and watch lists
+            AVAILABLE TOOLS:
+            - exa_legal_comprehensive: Large-scale legal research (35+ results) with full content from courts and regulators
+            - exa_court_records: Deep court records and case law search with full content
+            - exa_regulatory_compliance: Regulatory filings and enforcement actions with full content
+            - exa_legal_keyword: Precise search for legal terms, case citations, statute numbers
+            - exa_find_similar_legal: Similar legal documents and precedents for expanded analysis
+            - tavily_urgent_legal_news: ONLY for urgent legal breaking news (use minimally)
+            - sanctions_screening: Screen entities against OFAC, EU, and UN sanctions lists
+            - litigation_database_search: Search specialized litigation databases for case records
+            - compliance_regulatory_check: Check regulatory compliance across multiple agencies
 
-            Use multiple legal databases and regulatory sources for comprehensive coverage.
-            Focus on material legal risks and compliance issues.
-            Provide clear risk assessments with regulatory citations.
-            Always verify information across multiple authoritative sources.
-            Pay special attention to sanctions, AML, and regulatory violations.
+            LEGAL RESEARCH STRATEGY (EXA-DOMINATED):
+            1. Start with exa_legal_comprehensive for broad legal landscape analysis with full content
+            2. Use exa_court_records for deep dive into case law and judicial decisions
+            3. Use exa_regulatory_compliance for enforcement actions and regulatory compliance
+            4. Use exa_legal_keyword for specific legal terms, citations, or statute numbers
+            5. Use exa_find_similar_legal to expand research through similar cases and precedents
+            6. Always run sanctions_screening for compliance due diligence
+            7. Use litigation_database_search for specialized case history
+            8. Use compliance_regulatory_check for multi-agency compliance status
+            9. ONLY use tavily_urgent_legal_news for immediate legal breaking news (last resort)
+            10. Always leverage full content extraction and highlights for comprehensive legal analysis
+
+            KEY FOCUS AREAS:
+            - Litigation: Active cases, settlements, judgments, class actions
+            - Regulatory Compliance: SEC violations, FTC actions, industry-specific compliance
+            - Sanctions & AML: OFAC screening, EU sanctions, UN sanctions, PEP lists
+            - Corporate Governance: Board issues, executive misconduct, governance failures
+            - Intellectual Property: Patent disputes, trademark conflicts, IP litigation
+            - Employment Law: Labor violations, discrimination cases, workplace safety
+
+            QUALITY STANDARDS:
+            - Prioritize official government sources (courts, regulators, agencies)
+            - Always verify sanctions screening results across multiple lists
+            - Note case status (active, settled, dismissed) and materiality
+            - Extract specific citation numbers, filing dates, and court jurisdictions
+            - Flag any patterns of recurring legal issues or compliance failures
+            - Cross-verify legal findings from multiple authoritative sources
             """,
             name="legal_agent"
         )

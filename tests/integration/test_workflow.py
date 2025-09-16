@@ -7,6 +7,10 @@ from src.workflows.due_diligence import DueDiligenceWorkflow
 async def test_workflow_initialization():
     """Test workflow can be initialized"""
     workflow = DueDiligenceWorkflow()
+    
+    # Workflow should compile successfully when needed
+    compiled_graph = await workflow._ensure_compiled()
+    assert compiled_graph is not None
     assert workflow.compiled is not None
 
 @pytest.mark.asyncio

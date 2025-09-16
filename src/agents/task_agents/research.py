@@ -1,6 +1,8 @@
 from typing import Any
 
-from langchain_exa import ExaSearchResults
+from langchain_exa import ExaSearchResults, ExaSearchRetriever, ExaFindSimilarResults
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -21,15 +23,77 @@ class ResearchAgent:
     def _initialize_tools(self):
         tools = []
 
-        # Only add Exa if API key is valid
-        if settings.exa_api_key and settings.exa_api_key != "your_exa_key_here":
+        # Add comprehensive Exa tools if API key is valid
+        if settings.has_exa_key:
             try:
+                # Neural search for comprehensive, semantic research
                 tools.append(ExaSearchResults(
-                    num_results=10,
-                    api_key=settings.exa_api_key
+                    name="exa_neural_search",
+                    description="Perform deep neural search for comprehensive research using semantic understanding. Best for exploratory research and finding conceptually related content.",
+                    num_results=15,
+                    api_key=settings.exa_api_key,
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
                 ))
+                
+                # Auto search for optimal results without manual type selection
+                tools.append(ExaSearchResults(
+                    name="exa_auto_search",
+                    description="Intelligent search that automatically chooses optimal search strategy (neural vs keyword). Use when unsure of best search approach.",
+                    num_results=12,
+                    api_key=settings.exa_api_key,
+                    type="auto",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Keyword search for precise term matching
+                tools.append(ExaSearchResults(
+                    name="exa_keyword_search",
+                    description="Traditional keyword search for exact term matching. Best for proper nouns, specific company names, or technical terms.",
+                    num_results=10,
+                    api_key=settings.exa_api_key,
+                    type="keyword",
+                    text_contents_options=True
+                ))
+                
+                # Large-scale comprehensive search for due diligence
+                tools.append(ExaSearchResults(
+                    name="exa_comprehensive_search",
+                    description="Large-scale search returning many results for comprehensive due diligence research. Use for thorough investigation.",
+                    num_results=50,
+                    api_key=settings.exa_api_key,
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Find similar content for verification and expansion
+                tools.append(ExaFindSimilarResults(
+                    name="exa_find_similar",
+                    description="Find content similar to a given URL for cross-verification and expanding research scope",
+                    num_results=8,
+                    api_key=settings.exa_api_key,
+                    text_contents_options=True
+                ))
+                
+                print("✅ Advanced Exa tool suite initialized successfully")
             except Exception as e:
-                print(f"Warning: Failed to initialize Exa: {e}")
+                print(f"Warning: Failed to initialize Exa tools: {e}")
+
+        # Add minimal Tavily for breaking news only
+        if settings.has_tavily_key:
+            try:
+                tools.append(TavilySearchResults(
+                    name="tavily_breaking_news",
+                    description="ONLY for breaking news and real-time updates within last 24 hours. Use sparingly as auxiliary to main Exa research.",
+                    max_results=3,
+                    api_wrapper_kwargs={"api_key": settings.tavily_api_key}
+                ))
+                print("✅ Tavily auxiliary tool initialized")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Tavily: {e}")
 
         # If no real tools available, add a dummy tool for testing
         if not tools:
@@ -41,6 +105,7 @@ class ResearchAgent:
                 return f"Mock search results for: {query}"
 
             tools.append(dummy_search)
+            print("⚠️ Using dummy search tool - configure API keys for real functionality")
 
         return tools
 
@@ -48,18 +113,36 @@ class ResearchAgent:
         return create_react_agent(
             model=self.model,
             tools=self.tools,
-            prompt="""You are a research specialist focused on gathering accurate information.
+            prompt="""You are a research specialist focused on gathering accurate, comprehensive information for due diligence investigations.
 
-            Your responsibilities:
-            1. Conduct thorough web research using available tools
-            2. Verify information from multiple sources
-            3. Extract structured data according to task schema
-            4. Provide clear citations for all findings
-            5. Focus on factual, verifiable information
+            AVAILABLE TOOLS:
+            - exa_neural_search: Primary tool for deep, semantic research with full content and highlights
+            - exa_auto_search: Intelligent search that automatically optimizes search strategy
+            - exa_keyword_search: For exact term matching (company names, technical terms, proper nouns)
+            - exa_comprehensive_search: Large-scale search for thorough due diligence (50+ results)
+            - exa_find_similar: Find similar content for verification and research expansion
+            - tavily_breaking_news: ONLY for breaking news within 24 hours (use minimally)
 
-            Always use multiple search tools to cross-verify findings.
-            Prioritize recent, authoritative sources.
-            Be thorough but concise in your research.
+            RESEARCH STRATEGY (EXA-FIRST APPROACH):
+            1. Start with exa_auto_search for initial comprehensive research
+            2. Use exa_neural_search for deeper semantic exploration of complex topics
+            3. Use exa_keyword_search for specific entities, names, or technical terms
+            4. Use exa_comprehensive_search for thorough due diligence requiring many sources
+            5. Use exa_find_similar to expand research scope from high-quality sources found
+            6. ONLY use tavily_breaking_news for immediate news updates (last resort)
+            7. Always leverage full content and highlights from Exa results for detailed analysis
+
+            FOCUS AREAS:
+            - Corporate information: SEC filings, financial reports, business profiles
+            - Legal matters: Court records, regulatory actions, compliance status  
+            - Recent developments: News, press releases, market updates
+            - Background verification: Company history, leadership, operations
+
+            QUALITY STANDARDS:
+            - Prioritize authoritative sources (government, regulatory, established media)
+            - Provide specific citations with URLs
+            - Note confidence levels and source reliability
+            - Flag any contradictory information found between sources
             """,
             name="research_agent"
         )
