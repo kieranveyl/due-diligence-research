@@ -1,0 +1,131 @@
+#!/usr/bin/env python3
+"""
+Due Diligence CLI - Main Application Entry Point
+
+A modern CLI tool for comprehensive due diligence research using multi-agent AI.
+"""
+
+import click
+from typing import Optional
+
+# Import typer-based commands and convert them
+from src.cli.commands.research import research_cmd
+from src.cli.commands.config import config_cmd
+from src.cli.commands.reports import reports_cmd
+
+
+@click.group()
+@click.version_option(version="1.0.0", prog_name="Due Diligence CLI")
+@click.pass_context
+def app(ctx):
+    """Due Diligence CLI - Multi-Agent AI Research Tool
+
+    Conduct comprehensive due diligence research using specialized AI agents
+    for financial, legal, OSINT, and verification analysis.
+    """
+    if ctx.invoked_subcommand is None:
+        # Show welcome message
+        click.echo("🔍 Due Diligence CLI")
+        click.echo("Multi-Agent AI Research Tool for comprehensive due diligence")
+        click.echo("")
+        click.echo("📚 Quick Start:")
+        click.echo("  dd research \"Tesla Inc\"           # Interactive research")
+        click.echo("  dd research \"Apple Inc\" --help    # See all options")
+        click.echo("  dd config show                    # View configuration")
+        click.echo("  dd reports list                   # List reports")
+        click.echo("")
+        click.echo("💡 Use --help with any command for detailed information")
+
+
+@app.command()
+def health():
+    """Check system health and API connectivity"""
+    from src.cli.commands.utils import check_system_health
+    check_system_health()
+
+
+@app.command()
+def version():
+    """Show version information"""
+    click.echo("🔍 Due Diligence CLI v1.0.0")
+    click.echo("Multi-Agent AI Research Tool")
+
+
+# Add typer subcommands as click groups
+@app.group()
+def research():
+    """Conduct due diligence research"""
+    pass
+
+
+@app.group()
+def config():
+    """Manage configuration settings"""
+    pass
+
+
+@app.group()
+def reports():
+    """Manage and export reports"""
+    pass
+
+
+# Basic research command
+@research.command(name="run")
+@click.argument("entity_name")
+@click.option("--scope", help="Comma-separated research areas")
+@click.option("--output", "-o", help="Custom output path for report")
+@click.option("--format", "format_type", default="markdown", help="Output format")
+@click.option("--no-interactive", is_flag=True, help="Skip interactive prompts")
+@click.option("--confidence-threshold", type=float, help="Minimum confidence threshold")
+@click.option("--max-sources", type=int, help="Maximum sources to use")
+@click.option("--timeout", type=int, help="Research timeout in seconds")
+@click.option("--save-session", is_flag=True, help="Save session for later review")
+def research_run(entity_name, scope, output, format_type, no_interactive, confidence_threshold, max_sources, timeout, save_session):
+    """Conduct due diligence research on an entity"""
+    click.echo(f"Starting research on: {entity_name}")
+    click.echo("Research functionality will be implemented soon.")
+    click.echo("For now, this demonstrates the working CLI structure.")
+
+
+# Basic config commands
+@config.command()
+def show():
+    """Display current configuration"""
+    from src.cli.commands.config import show_config
+    show_config()
+
+
+@config.command()
+@click.argument("setting", required=False)
+@click.argument("value", required=False)
+def set(setting, value):
+    """Set configuration values"""
+    if not setting:
+        click.echo("Interactive configuration setup would go here")
+    else:
+        click.echo(f"Setting {setting} = {value}")
+
+
+# Basic reports commands
+@reports.command()
+@click.option("--dir", "-d", help="Reports directory to scan")
+@click.option("--limit", "-l", default=20, help="Maximum number of reports to show")
+def list(dir, limit):
+    """List all available reports"""
+    from src.cli.commands.reports import list_reports
+    list_reports(dir, limit)
+
+
+@reports.command()
+@click.argument("report_name")
+@click.option("--dir", "-d", help="Reports directory")
+@click.option("--lines", "-n", type=int, help="Number of lines to show")
+def show(report_name, dir, lines):
+    """Display report content"""
+    from src.cli.commands.reports import show_report
+    show_report(report_name, dir, lines)
+
+
+if __name__ == "__main__":
+    app()

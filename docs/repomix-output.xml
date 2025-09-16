@@ -1,0 +1,3027 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+design/
+  overview.md
+examples/
+  quick-start.md
+user-guide/
+  cli-reference.md
+  configuration.md
+  getting-started.md
+  reports.md
+  research-guide.md
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="design/overview.md">
+# System Overview
+
+This document provides a high-level architectural overview of the Due Diligence CLI system, explaining how the components work together to deliver comprehensive AI-powered research capabilities.
+
+## 🎯 System Purpose
+
+The Due Diligence CLI is designed to conduct comprehensive, multi-dimensional research on entities (companies, individuals, organizations) using specialized AI agents. It combines:
+
+- **Multiple AI Models** for diverse analytical perspectives
+- **Specialized Research Agents** for different investigation domains
+- **Modern CLI Interface** for user-friendly operation
+- **Flexible Configuration** for different use cases
+- **Professional Reporting** for actionable insights
+
+## 🏗️ Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Due Diligence CLI                           │
+├─────────────────────────────────────────────────────────────────┤
+│  CLI Interface (Typer + Rich)                                  │
+│  ├── Research Commands                                          │
+│  ├── Configuration Management                                   │
+│  ├── Report Management                                          │
+│  └── System Health Monitoring                                  │
+├─────────────────────────────────────────────────────────────────┤
+│  Core Engine                                                    │
+│  ├── Multi-Agent Orchestration (LangGraph)                     │
+│  ├── Workflow Management                                        │
+│  ├── Session Persistence                                       │
+│  └── Progress Tracking                                         │
+├─────────────────────────────────────────────────────────────────┤
+│  Specialized Research Agents                                   │
+│  ├── Financial Agent (Investment Analysis)                     │
+│  ├── Legal Agent (Compliance & Litigation)                     │
+│  ├── OSINT Agent (Open Source Intelligence)                    │
+│  └── Verification Agent (Cross-Validation)                     │
+├─────────────────────────────────────────────────────────────────┤
+│  Data Layer                                                     │
+│  ├── External APIs (Exa, OpenAI, Anthropic)                    │
+│  ├── Configuration Storage (JSON)                              │
+│  ├── Session Data (Persistent State)                           │
+│  └── Report Generation (Multiple Formats)                      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## 🧠 Core Components
+
+### 1. CLI Interface Layer
+
+**Modern Command-Line Interface**
+- Built with **Typer** for robust command handling
+- **Rich** integration for beautiful progress displays and tables
+- Interactive prompts for user-friendly operation
+- Support for both interactive and automated workflows
+
+**Key Features:**
+- Real-time progress tracking during research
+- Interactive configuration setup
+- Comprehensive help system
+- Tab completion support
+
+### 2. Multi-Agent Research Engine
+
+**LangGraph-Based Orchestration**
+- Coordinates multiple specialized AI agents
+- Manages complex research workflows
+- Handles parallel execution and dependencies
+- Provides state management and error recovery
+
+**Workflow Management:**
+- Entity type detection and optimization
+- Dynamic agent selection based on research scope
+- Progress tracking and user feedback
+- Result synthesis and confidence scoring
+
+### 3. Specialized Research Agents
+
+Each agent focuses on a specific domain of investigation:
+
+#### 🏦 Financial Agent
+- **Purpose**: Analyze financial health and investment viability
+- **Data Sources**: Financial reports, market data, investment records
+- **Key Metrics**: Revenue trends, profitability, debt levels, cash flow
+- **Use Cases**: Investment decisions, M&A analysis, financial risk assessment
+
+#### ⚖️ Legal Agent
+- **Purpose**: Assess legal compliance and litigation risks
+- **Data Sources**: Court records, regulatory filings, compliance databases
+- **Key Metrics**: Active litigation, regulatory violations, compliance status
+- **Use Cases**: Risk assessment, due diligence, compliance verification
+
+#### 🔍 OSINT Agent
+- **Purpose**: Gather open source intelligence and public information
+- **Data Sources**: News articles, social media, public records, databases
+- **Key Metrics**: Public sentiment, news coverage, reputation indicators
+- **Use Cases**: Background checks, reputation analysis, public perception
+
+#### ✅ Verification Agent
+- **Purpose**: Cross-verify information and assess confidence levels
+- **Data Sources**: Multiple sources for cross-referencing
+- **Key Metrics**: Source reliability, information consistency, confidence scores
+- **Use Cases**: Fact-checking, reliability assessment, quality assurance
+
+## 🔄 Data Flow Architecture
+
+### Research Execution Flow
+
+```
+User Input → Entity Detection → Scope Selection → Agent Orchestration
+     ↓              ↓              ↓                    ↓
+Configuration → Workflow Setup → Parallel Execution → Result Synthesis
+     ↓              ↓              ↓                    ↓
+Progress UI ← Session Tracking ← Real-time Updates ← Report Generation
+```
+
+### Detailed Process Flow
+
+1. **Input Processing**
+   - Entity name normalization
+   - Type detection (company, person, organization)
+   - Scope validation and configuration
+
+2. **Workflow Initialization**
+   - Agent selection based on scope
+   - Resource allocation and limits
+   - Progress tracking setup
+
+3. **Parallel Research Execution**
+   - Agents work simultaneously on different aspects
+   - Real-time progress updates to CLI
+   - Error handling and retry logic
+
+4. **Result Synthesis**
+   - Agent findings aggregation
+   - Cross-verification between agents
+   - Confidence scoring and risk assessment
+
+5. **Report Generation**
+   - Structured data compilation
+   - Multi-format output generation
+   - Citation and source management
+
+## 🛠️ Technology Stack
+
+### Core Framework
+- **Python 3.11+** - Modern Python features and performance
+- **LangGraph** - Multi-agent orchestration and workflow management
+- **LangChain** - AI model integration and prompt management
+
+### CLI Framework
+- **Typer** - Modern CLI framework with type hints
+- **Rich** - Beautiful terminal output and progress displays
+- **Pydantic** - Data validation and configuration management
+
+### AI & Data
+- **OpenAI GPT** - Primary language model for analysis
+- **Anthropic Claude** - Secondary model for verification
+- **Exa API** - Web search and data collection
+- **LangSmith** - Observability and monitoring
+
+### Storage & Configuration
+- **JSON** - Configuration and session persistence
+- **File System** - Report storage and management
+- **Environment Variables** - API key management
+
+## 🔧 Configuration Architecture
+
+### Hierarchical Configuration
+
+```
+Environment Variables (Highest Priority)
+    ↓
+Command Line Arguments
+    ↓
+Configuration File (~/.config/due-diligence/config.json)
+    ↓
+System Defaults (Lowest Priority)
+```
+
+### Configuration Categories
+
+1. **Research Parameters**
+   - Default scope selection
+   - Confidence thresholds
+   - Source limits and timeouts
+
+2. **Output Settings**
+   - Default report directory
+   - Format preferences
+   - Naming conventions
+
+3. **System Settings**
+   - API keys and endpoints
+   - Model selection
+   - Parallel execution limits
+
+4. **UI Preferences**
+   - Progress display options
+   - Verbosity levels
+   - Color and formatting
+
+## 📊 State Management
+
+### Session Persistence
+
+**Purpose**: Maintain research state across interruptions and enable resumability
+
+**Components:**
+- Session metadata (entity, scope, timing)
+- Agent progress tracking
+- Intermediate results storage
+- Error and retry information
+
+**Benefits:**
+- Resume interrupted research
+- Audit trail for compliance
+- Debugging and troubleshooting
+- Result reproducibility
+
+### Progress Tracking
+
+**Real-time Updates:**
+- Overall research progress percentage
+- Individual agent status and confidence
+- Current phase and estimated completion
+- Error states and recovery actions
+
+**User Experience:**
+- Visual progress bars and spinners
+- Agent-specific status indicators
+- Time elapsed and estimated remaining
+- Informative status messages
+
+## 🔐 Security Architecture
+
+### API Key Management
+
+**Storage:**
+- Environment variables (recommended)
+- Configuration file (encrypted)
+- Interactive input (temporary)
+
+**Security Measures:**
+- No API keys in command history
+- Secure configuration file permissions
+- API key validation and rotation support
+
+### Data Handling
+
+**Principles:**
+- No persistent storage of API responses
+- Temporary data cleanup after processing
+- User control over data retention
+- Compliance with data protection requirements
+
+## 🚀 Performance Characteristics
+
+### Scalability
+
+**Parallel Execution:**
+- Multiple agents work simultaneously
+- Configurable concurrency limits
+- Resource-aware task scheduling
+
+**Resource Management:**
+- Memory-efficient data processing
+- Streaming for large datasets
+- Timeout controls for long operations
+
+### Efficiency
+
+**Caching Strategy:**
+- Session state preservation
+- Configuration caching
+- Result memoization for repeated entities
+
+**Optimization:**
+- Lazy loading of components
+- Asynchronous I/O operations
+- Efficient data structures
+
+## 🔍 Observability
+
+### Monitoring Capabilities
+
+**System Health:**
+- API connectivity checks
+- Configuration validation
+- Resource availability monitoring
+
+**Research Quality:**
+- Confidence score tracking
+- Source reliability metrics
+- Agent performance monitoring
+
+### Debugging Support
+
+**Logging:**
+- Structured logging with multiple levels
+- Research trail documentation
+- Error tracking and reporting
+
+**Session Analysis:**
+- Complete research history
+- Agent decision tracking
+- Performance metrics collection
+
+## 🔗 Integration Points
+
+### External Services
+
+**Required Integrations:**
+- OpenAI API for language model access
+- Exa API for web search and data collection
+
+**Optional Integrations:**
+- Anthropic API for additional AI capabilities
+- LangSmith for monitoring and observability
+
+### Extensibility
+
+**Plugin Architecture:**
+- Custom agent development
+- Additional data source integration
+- Custom report formats
+- Workflow customization
+
+## 📈 Future Architecture Considerations
+
+### Planned Enhancements
+
+**Scalability:**
+- Distributed agent execution
+- Cloud-based processing options
+- Enterprise deployment models
+
+**Capabilities:**
+- Additional specialized agents
+- Real-time data streaming
+- Advanced visualization
+- API endpoints for integration
+
+**Intelligence:**
+- Improved confidence scoring
+- Adaptive research strategies
+- Learning from user feedback
+- Automated quality improvement
+
+This architecture provides a robust foundation for comprehensive due diligence research while maintaining flexibility for future enhancements and customizations.
+</file>
+
+<file path="examples/quick-start.md">
+# Quick Start Examples
+
+Get up and running quickly with these practical examples that demonstrate core Due Diligence CLI functionality.
+
+## 🚀 Basic Examples
+
+### Your First Research
+
+```bash
+# Simple company research
+dd research "Tesla Inc"
+```
+
+**What happens:**
+
+1. System detects this is a company
+2. Asks you to confirm the analysis approach
+3. Interactive scope selection (financial, legal, OSINT, verification)
+4. Real-time progress display as agents work
+5. Comprehensive report generated in `./reports/`
+
+### Quick Non-Interactive Research
+
+```bash
+# Fast research without prompts
+dd research "Apple Inc" --scope financial --no-interactive
+```
+
+**Perfect for:**
+
+- Automation scripts
+- Quick financial checks
+- Batch processing multiple entities
+
+### Custom Output Location
+
+```bash
+# Save to specific location with custom name
+dd research "Microsoft Corp" --output "./my-analysis/msft-$(date +%Y%m%d).md"
+```
+
+## 🎯 Scope-Specific Examples
+
+### Financial Analysis Only
+
+```bash
+# Focus on financial health for investment decisions
+dd research "NVIDIA Corp" \
+  --scope financial \
+  --confidence-threshold 0.9 \
+  --max-sources 75 \
+  --no-interactive
+```
+
+**Use cases:**
+
+- Investment screening
+- Portfolio analysis
+- Financial health checks
+
+### Legal Compliance Check
+
+```bash
+# Focus on legal and regulatory issues
+dd research "Pharmaceutical Company" \
+  --scope legal,verification \
+  --timeout 1800 \
+  --no-interactive
+```
+
+**Use cases:**
+
+- M&A due diligence
+- Compliance verification
+- Risk assessment
+
+### Comprehensive Investigation
+
+```bash
+# Full-spectrum analysis with all agents
+dd research "Target Acquisition Corp" \
+  --scope financial,legal,osint,verification \
+  --confidence-threshold 0.8 \
+  --max-sources 100 \
+  --save-session
+
+```
+
+**Use cases:**
+
+- Major acquisitions
+- Partnership decisions
+- High-stakes investments
+
+## 👥 Individual Research Examples
+
+### Background Check
+
+```bash
+# Research an individual (executive, partner, etc.)
+dd research "John Smith, CEO of Acme Corp" \
+  --scope osint,verification \
+  --no-interactive
+```
+
+### Key Person Risk Assessment
+
+```bash
+# Comprehensive individual analysis
+dd research "Jane Doe, CTO at TechStart Inc" \
+  --scope financial,legal,osint,verification \
+  --confidence-threshold 0.85
+```
+
+## 🔧 Configuration Examples
+
+### Initial Setup
+
+```bash
+# Interactive configuration setup
+dd config set
+
+# Set specific configurations
+dd config set default_output_dir "./due-diligence-reports"
+dd config set default_scope "financial,legal"
+dd config set confidence_threshold 0.85
+```
+
+### API Key Setup
+
+```bash
+# Check current configuration
+dd config show
+
+# Validate API keys
+dd config validate
+
+# Set API keys interactively
+dd config set
+```
+
+## 📊 Reports Management Examples
+
+### List and View Reports
+
+```bash
+# List all reports
+dd reports list
+
+# Show recent reports with more details
+dd reports list --limit 50
+
+# View a specific report
+dd reports show tesla-inc-20240315.md
+
+# View first 50 lines of a report
+dd reports show tesla-inc-20240315.md --lines 50
+```
+
+### Export and Convert Reports
+
+```bash
+# Export to PDF for presentations
+dd reports export tesla-inc-20240315.md --format pdf
+
+# Export to JSON for data processing
+dd reports export tesla-inc-20240315.md --format json --output ./data/tesla.json
+
+# Export by session ID
+dd reports export abc12345 --format pdf
+```
+
+### Report Cleanup
+
+```bash
+# See what would be cleaned up (dry run)
+dd reports cleanup --dry-run
+
+# Clean up reports older than 7 days
+dd reports cleanup --older-than 7
+
+# Force cleanup without confirmation
+dd reports cleanup --older-than 30 --yes
+```
+
+## 🔄 Session Management Examples
+
+### Working with Sessions
+
+```bash
+# Start research with session saving
+dd research "Complex Entity Inc" --save-session
+
+# Check session status
+dd research status
+
+# View specific session
+dd research status abc12345
+
+# Resume interrupted research
+dd research --resume abc12345
+```
+
+## 🛠️ Automation Examples
+
+### Simple Automation Script
+
+```bash
+#!/bin/bash
+# simple-research.sh
+
+ENTITY="$1"
+OUTPUT_DIR="./research-$(date +%Y%m%d)"
+
+if [ -z "$ENTITY" ]; then
+    echo "Usage: $0 'Entity Name'"
+    exit 1
+fi
+
+mkdir -p "$OUTPUT_DIR"
+
+dd research "$ENTITY" \
+  --scope financial,legal \
+  --no-interactive \
+  --output "$OUTPUT_DIR/$(echo "$ENTITY" | tr ' ' '-' | tr '[:upper:]' '[:lower:]').md" \
+  --save-session
+
+echo "Research completed. Results in: $OUTPUT_DIR"
+```
+
+**Usage:**
+
+```bash
+chmod +x simple-research.sh
+./simple-research.sh "Tesla Inc"
+```
+
+### Batch Processing Script
+
+```bash
+#!/bin/bash
+# batch-research.sh
+
+ENTITIES_FILE="$1"
+OUTPUT_DIR="./batch-research-$(date +%Y%m%d)"
+
+if [ ! -f "$ENTITIES_FILE" ]; then
+    echo "Usage: $0 entities.txt"
+    echo "entities.txt should contain one entity name per line"
+    exit 1
+fi
+
+mkdir -p "$OUTPUT_DIR"
+
+while IFS= read -r entity; do
+    if [ -n "$entity" ]; then
+        echo "Researching: $entity"
+
+        filename=$(echo "$entity" | tr ' ' '-' | tr '[:upper:]' '[:lower:]' | tr -d '[:punct:]')
+
+        dd research "$entity" \
+          --scope financial \
+          --no-interactive \
+          --timeout 600 \
+          --output "$OUTPUT_DIR/${filename}.md" \
+          --save-session
+
+        echo "Completed: $entity"
+        sleep 5  # Rate limiting
+    fi
+done < "$ENTITIES_FILE"
+
+echo "Batch processing completed. Results in: $OUTPUT_DIR"
+```
+
+**Usage:**
+
+```bash
+# Create entities list
+cat > entities.txt << EOF
+Tesla Inc
+Apple Inc
+Microsoft Corp
+Amazon.com Inc
+EOF
+
+chmod +x batch-research.sh
+./batch-research.sh entities.txt
+```
+
+### Daily Research Automation
+
+```bash
+#!/bin/bash
+# daily-research.sh - Add to cron for daily execution
+
+DATE=$(date +%Y%m%d)
+WATCHLIST="./watchlist.txt"
+OUTPUT_DIR="./daily-research/$DATE"
+
+mkdir -p "$OUTPUT_DIR"
+
+if [ -f "$WATCHLIST" ]; then
+    while IFS= read -r entity; do
+        if [ -n "$entity" ]; then
+            filename=$(echo "$entity" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+
+            dd research "$entity" \
+              --scope financial \
+              --no-interactive \
+              --timeout 300 \
+              --max-sources 25 \
+              --output "$OUTPUT_DIR/${filename}.md"
+        fi
+    done < "$WATCHLIST"
+
+    # Generate summary
+    dd reports summary --dir "$OUTPUT_DIR" > "$OUTPUT_DIR/summary.txt"
+fi
+```
+
+**Cron setup:**
+
+```bash
+# Add to crontab (crontab -e)
+0 9 * * 1-5 /path/to/daily-research.sh
+```
+
+## 💡 Advanced Examples
+
+### High-Confidence Deep Dive
+
+```bash
+# Maximum depth analysis for critical decisions
+dd research "Critical Acquisition Target" \
+  --scope financial,legal,osint,verification \
+  --confidence-threshold 0.95 \
+  --max-sources 150 \
+  --timeout 3600 \
+  --save-session \
+  --output "./critical-analysis/$(date +%Y%m%d)-acquisition-analysis.md"
+```
+
+### Competitive Intelligence
+
+```bash
+# Research multiple competitors quickly
+for company in "Competitor A" "Competitor B" "Competitor C"; do
+    dd research "$company" \
+      --scope financial,osint \
+      --no-interactive \
+      --timeout 900 \
+      --output "./competitive-intel/$(echo "$company" | tr ' ' '-').md"
+done
+
+# Generate competitive summary
+dd reports summary --dir "./competitive-intel"
+```
+
+### Regulatory Compliance Batch
+
+```bash
+# Compliance check for portfolio companies
+dd research "Portfolio Company 1" --scope legal,verification --no-interactive &
+dd research "Portfolio Company 2" --scope legal,verification --no-interactive &
+dd research "Portfolio Company 3" --scope legal,verification --no-interactive &
+
+wait  # Wait for all background jobs to complete
+
+echo "Compliance analysis completed for all portfolio companies"
+```
+
+## 📋 Common Patterns
+
+### Daily Workflow
+
+```bash
+# Morning routine: Check overnight news and updates
+dd config validate  # Ensure system is ready
+dd research "Primary Investment" --scope osint --timeout 300 --no-interactive
+dd reports list --limit 10  # Review recent research
+```
+
+### Pre-Meeting Preparation
+
+```bash
+# Quick brief before important meeting
+dd research "Meeting Subject Entity" \
+  --scope financial,osint \
+  --timeout 600 \
+  --output "./meeting-prep/$(date +%Y%m%d)-brief.md" \
+  --no-interactive
+```
+
+### Investment Committee Prep
+
+```bash
+# Comprehensive analysis for investment committee
+dd research "Investment Target" \
+  --scope financial,legal,verification \
+  --confidence-threshold 0.9 \
+  --save-session \
+  --output "./investment-committee/$(date +%Y%m%d)-full-analysis.md"
+
+# Export to PDF for presentation
+dd reports export "./investment-committee/$(date +%Y%m%d)-full-analysis.md" --format pdf
+```
+
+## 🚨 Troubleshooting Examples
+
+### Debug Mode Research
+
+```bash
+# Research with maximum verbosity for troubleshooting
+dd research "Problematic Entity" \
+  --scope financial \
+  --max-sources 10 \
+  --timeout 300 \
+  --save-session \
+  --no-interactive 2>&1 | tee debug.log
+```
+
+### Recovery from Interrupted Research
+
+```bash
+# Check recent sessions
+dd research status
+
+# Resume the most recent session
+dd research --resume $(dd research status | head -2 | tail -1 | awk '{print $1}')
+```
+
+### Configuration Backup and Restore
+
+```bash
+# Backup configuration
+dd config export --output "./backups/config-$(date +%Y%m%d).json"
+
+# Restore configuration
+dd config import "./backups/config-20240315.json"
+```
+
+## 🎯 Next Steps
+
+After trying these examples:
+
+1. **[Research Guide](../user-guide/research-guide.md)** - Learn advanced research techniques
+2. **[Configuration Guide](../user-guide/configuration.md)** - Customize your setup
+3. **[CLI Reference](../user-guide/cli-reference.md)** - Complete command documentation
+4. **[Advanced Examples](./advanced.md)** - Complex research scenarios
+</file>
+
+<file path="user-guide/cli-reference.md">
+# CLI Reference
+
+Complete reference documentation for all Due Diligence CLI commands and options.
+
+## 📋 Global Options
+
+These options are available for all commands:
+
+| Option | Description |
+|--------|-------------|
+| `--help` | Show help message and exit |
+| `--version` | Show version information |
+
+## 🔬 Research Commands
+
+### `dd research [ENTITY_NAME]`
+
+Conduct due diligence research on an entity.
+
+#### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `ENTITY_NAME` | string | Yes | Name of entity to research |
+
+#### Options
+
+| Option | Short | Type | Default | Description |
+|--------|-------|------|---------|-------------|
+| `--scope` | | string | interactive | Comma-separated research areas |
+| `--output` | `-o` | path | auto | Custom output path for report |
+| `--format` | | choice | markdown | Output format (markdown, json, pdf) |
+| `--no-interactive` | | flag | false | Skip interactive prompts |
+| `--confidence-threshold` | | float | 0.8 | Minimum confidence threshold |
+| `--max-sources` | | int | 50 | Maximum sources to use |
+| `--timeout` | | int | 300 | Research timeout in seconds |
+| `--model` | | string | config | Override default LLM model |
+| `--parallel-tasks` | | int | config | Number of parallel tasks |
+| `--save-session` | | flag | false | Save session for later review |
+| `--resume` | | string | | Resume previous session by ID |
+
+#### Scope Values
+
+| Scope | Description |
+|-------|-------------|
+| `financial` | Financial health, revenue, investments, risks |
+| `legal` | Legal compliance, litigation, regulatory status |
+| `osint` | Open source intelligence, public records, news |
+| `verification` | Cross-verification, fact-checking, confidence |
+
+#### Examples
+
+```bash
+# Basic interactive research
+dd research "Tesla Inc"
+
+# Non-interactive with specific scope
+dd research "Apple Inc" --scope financial,legal --no-interactive
+
+# Custom output and high confidence
+dd research "Microsoft Corp" --output ./reports/msft.md --confidence-threshold 0.9
+
+# Quick research with timeout
+dd research "Startup Inc" --timeout 600 --max-sources 25
+
+# Resume previous session
+dd research --resume abc12345
+```
+
+### `dd research status [SESSION_ID]`
+
+Check status of research sessions.
+
+#### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `SESSION_ID` | string | No | Specific session ID to check |
+
+#### Examples
+
+```bash
+# List recent sessions
+dd research status
+
+# Check specific session
+dd research status abc12345
+```
+
+## ⚙️ Configuration Commands
+
+### `dd config show`
+
+Display current configuration settings.
+
+#### Examples
+
+```bash
+dd config show
+```
+
+### `dd config set [SETTING] [VALUE]`
+
+Set configuration values.
+
+#### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `SETTING` | string | No | Setting name to configure |
+| `VALUE` | string | No | New value for setting |
+
+#### Available Settings
+
+| Setting | Type | Description |
+|---------|------|-------------|
+| `default_output_dir` | path | Default reports directory |
+| `default_format` | choice | Default output format |
+| `default_scope` | list | Default research areas |
+| `confidence_threshold` | float | Minimum confidence threshold |
+| `max_sources` | int | Maximum sources per research |
+| `timeout` | int | Research timeout in seconds |
+| `model` | string | Default LLM model |
+| `parallel_tasks` | int | Max parallel tasks |
+| `auto_validate_keys` | bool | Auto-validate API keys |
+
+#### Examples
+
+```bash
+# Interactive configuration
+dd config set
+
+# Set specific value
+dd config set default_output_dir "./my-reports"
+
+# Set multiple scope values
+dd config set default_scope "financial,legal,osint"
+
+# Set numeric values
+dd config set confidence_threshold 0.9
+dd config set max_sources 75
+dd config set timeout 1800
+```
+
+### `dd config reset`
+
+Reset configuration to defaults.
+
+#### Options
+
+| Option | Short | Description |
+|--------|-------|-------------|
+| `--yes` | `-y` | Skip confirmation prompt |
+
+#### Examples
+
+```bash
+# Interactive reset
+dd config reset
+
+# Force reset without confirmation
+dd config reset --yes
+```
+
+### `dd config validate`
+
+Validate current configuration and API keys.
+
+#### Examples
+
+```bash
+dd config validate
+```
+
+### `dd config export`
+
+Export configuration to file.
+
+#### Options
+
+| Option | Short | Type | Description |
+|--------|-------|------|-------------|
+| `--output` | `-o` | path | Output file path |
+
+#### Examples
+
+```bash
+# Export with default name
+dd config export
+
+# Export to specific file
+dd config export --output my-config.json
+```
+
+### `dd config import [CONFIG_FILE]`
+
+Import configuration from file.
+
+#### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `CONFIG_FILE` | path | Yes | Configuration file to import |
+
+#### Options
+
+| Option | Description |
+|--------|-------------|
+| `--merge` | Merge with existing config instead of replacing |
+
+#### Examples
+
+```bash
+# Replace entire configuration
+dd config import my-config.json
+
+# Merge with existing configuration
+dd config import my-config.json --merge
+```
+
+## 📊 Reports Commands
+
+### `dd reports list`
+
+List all available reports.
+
+#### Options
+
+| Option | Short | Type | Default | Description |
+|--------|-------|------|---------|-------------|
+| `--dir` | `-d` | path | config | Reports directory to scan |
+| `--limit` | `-l` | int | 20 | Maximum number of reports to show |
+
+#### Examples
+
+```bash
+# List reports in default directory
+dd reports list
+
+# List reports in specific directory
+dd reports list --dir ./my-reports
+
+# Show more reports
+dd reports list --limit 50
+```
+
+### `dd reports show [REPORT_NAME]`
+
+Display report content.
+
+#### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `REPORT_NAME` | string | Yes | Report filename or session ID |
+
+#### Options
+
+| Option | Short | Type | Description |
+|--------|-------|------|-------------|
+| `--dir` | `-d` | path | Reports directory |
+| `--lines` | `-n` | int | Number of lines to show |
+
+#### Examples
+
+```bash
+# Show full report
+dd reports show tesla-analysis.md
+
+# Show report by session ID
+dd reports show abc12345
+
+# Show first 50 lines
+dd reports show tesla-analysis.md --lines 50
+
+# Show report from specific directory
+dd reports show tesla-analysis.md --dir ./my-reports
+```
+
+### `dd reports export [REPORT_NAME]`
+
+Export report to different format.
+
+#### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `REPORT_NAME` | string | Yes | Report filename or session ID |
+
+#### Options
+
+| Option | Short | Type | Default | Description |
+|--------|-------|------|---------|-------------|
+| `--format` | `-f` | choice | pdf | Output format (pdf, json, markdown) |
+| `--output` | `-o` | path | auto | Output file path |
+| `--dir` | `-d` | path | config | Reports directory |
+
+#### Examples
+
+```bash
+# Export to PDF
+dd reports export tesla-analysis.md --format pdf
+
+# Export with custom output path
+dd reports export tesla-analysis.md --format json --output ./exports/tesla.json
+
+# Export by session ID
+dd reports export abc12345 --format pdf
+```
+
+### `dd reports cleanup`
+
+Clean up old reports.
+
+#### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--dir` | path | config | Reports directory |
+| `--older-than` | int | 30 | Delete reports older than N days |
+| `--dry-run` | flag | false | Show what would be deleted without deleting |
+| `--yes` | flag | false | Skip confirmation prompts |
+
+#### Examples
+
+```bash
+# Clean up reports older than 30 days (interactive)
+dd reports cleanup
+
+# Clean up reports older than 7 days
+dd reports cleanup --older-than 7
+
+# See what would be cleaned up without deleting
+dd reports cleanup --dry-run
+
+# Clean up without confirmation
+dd reports cleanup --older-than 30 --yes
+```
+
+### `dd reports summary`
+
+Show reports summary statistics.
+
+#### Options
+
+| Option | Short | Type | Description |
+|--------|-------|------|-------------|
+| `--dir` | `-d` | path | Reports directory |
+
+#### Examples
+
+```bash
+# Show summary for default directory
+dd reports summary
+
+# Show summary for specific directory
+dd reports summary --dir ./my-reports
+```
+
+## 🏥 System Commands
+
+### `dd health`
+
+Check system health and API connectivity.
+
+#### Examples
+
+```bash
+dd health
+```
+
+### `dd version`
+
+Show version information.
+
+#### Examples
+
+```bash
+dd version
+```
+
+## 🔧 Environment Variables
+
+These environment variables affect CLI behavior:
+
+| Variable | Description |
+|----------|-------------|
+| `OPENAI_API_KEY` | OpenAI API key for AI analysis |
+| `EXA_API_KEY` | Exa API key for web search |
+| `ANTHROPIC_API_KEY` | Anthropic API key (optional) |
+| `LANGSMITH_API_KEY` | LangSmith API key (optional) |
+| `DD_CONFIG_DIR` | Custom configuration directory |
+| `DD_REPORTS_DIR` | Default reports directory |
+
+## 📁 File Locations
+
+### Configuration
+
+- **Linux/macOS**: `~/.config/due-diligence/config.json`
+- **Windows**: `%APPDATA%\due-diligence\config.json`
+
+### Reports
+
+- **Default**: `./reports/` (current directory)
+- **Configurable**: Set via `default_output_dir` setting
+
+### Session Data
+
+- **Linux/macOS**: `~/.config/due-diligence/sessions/`
+- **Windows**: `%APPDATA%\due-diligence\sessions\`
+
+## 🚨 Exit Codes
+
+| Code | Description |
+|------|-------------|
+| 0 | Success |
+| 1 | General error |
+| 2 | Configuration error |
+| 3 | API key error |
+| 4 | Network error |
+| 5 | File/permission error |
+
+## 💡 Tips and Tricks
+
+### Command Aliases
+
+You can create shell aliases for common commands:
+
+```bash
+# Add to your .bashrc or .zshrc
+alias ddr="dd research"
+alias ddc="dd config"
+alias ddl="dd reports list"
+```
+
+### Output Redirection
+
+```bash
+# Save command output to file
+dd reports list > reports-inventory.txt
+
+# Append to log file
+dd research "Entity" 2>&1 | tee -a research.log
+```
+
+### Scripting Integration
+
+```bash
+#!/bin/bash
+# Automated research script
+
+ENTITY="$1"
+DATE=$(date +%Y%m%d)
+OUTPUT_DIR="./daily-research/$DATE"
+
+mkdir -p "$OUTPUT_DIR"
+
+dd research "$ENTITY" \
+  --no-interactive \
+  --scope financial,legal \
+  --output "$OUTPUT_DIR/$ENTITY-analysis.md" \
+  --save-session
+```
+
+### Tab Completion
+
+The CLI supports tab completion for commands and options. To enable:
+
+```bash
+# For bash
+eval "$(_DD_COMPLETE=bash_source dd)" >> ~/.bashrc
+
+# For zsh
+eval "$(_DD_COMPLETE=zsh_source dd)" >> ~/.zshrc
+```
+
+## 🔗 Related Documentation
+
+- **[Getting Started](./getting-started.md)** - Initial setup and first steps
+- **[Research Guide](./research-guide.md)** - Comprehensive research techniques
+- **[Configuration Guide](./configuration.md)** - Detailed configuration options
+- **[Examples](../examples/quick-start.md)** - Practical usage examples
+</file>
+
+<file path="user-guide/configuration.md">
+# Configuration Guide
+
+This guide covers comprehensive configuration of the Due Diligence CLI, from basic setup to advanced customization.
+
+## 🎯 Configuration Overview
+
+The CLI uses a hierarchical configuration system:
+
+1. **Environment Variables** (highest priority)
+2. **Command Line Arguments**
+3. **Configuration File** (`~/.config/due-diligence/config.json`)
+4. **System Defaults** (lowest priority)
+
+## 🚀 Quick Setup
+
+### Interactive Configuration
+
+The fastest way to get started:
+
+```bash
+dd config set
+```
+
+This launches an interactive setup wizard that guides you through:
+- Output directory settings
+- Default research scope
+- Confidence thresholds
+- Model preferences
+- API key configuration
+
+### Check Current Configuration
+
+```bash
+dd config show
+```
+
+Displays:
+- All current settings and values
+- API key status (configured/missing)
+- Configuration file location
+
+### Validate Setup
+
+```bash
+dd config validate
+```
+
+Verifies:
+- All settings are valid
+- API keys are configured and working
+- Output directories are accessible
+- System health
+
+## 🔑 API Key Configuration
+
+### Required API Keys
+
+| Service | Purpose | Required |
+|---------|---------|----------|
+| **OpenAI** | Primary AI analysis engine | ✅ Yes |
+| **Exa** | Web search and data collection | ✅ Yes |
+| **Anthropic** | Secondary AI for verification | ⚪ Optional |
+| **LangSmith** | Monitoring and observability | ⚪ Optional |
+
+### Setting API Keys
+
+#### Method 1: Interactive Setup
+```bash
+dd config set
+# Follow prompts for API key input
+```
+
+#### Method 2: Environment Variables (Recommended)
+```bash
+export OPENAI_API_KEY="sk-..."
+export EXA_API_KEY="..."
+export ANTHROPIC_API_KEY="sk-ant-..."  # Optional
+export LANGSMITH_API_KEY="..."         # Optional
+```
+
+Add to your shell profile (`.bashrc`, `.zshrc`, etc.) for persistence.
+
+#### Method 3: Direct Configuration
+```bash
+dd config set openai_api_key "sk-..."
+dd config set exa_api_key "..."
+```
+
+### API Key Security
+
+**Best Practices:**
+- Use environment variables for production
+- Never commit API keys to version control
+- Rotate keys regularly
+- Use least-privilege API key permissions
+
+**File Permissions:**
+The configuration file is automatically secured with `600` permissions (owner read/write only).
+
+## ⚙️ Research Settings
+
+### Default Research Scope
+
+Configure which research areas are included by default:
+
+```bash
+# Set multiple scopes
+dd config set default_scope "financial,legal,osint"
+
+# Set single scope
+dd config set default_scope "financial"
+
+# Include all scopes
+dd config set default_scope "financial,legal,osint,verification"
+```
+
+**Available Scopes:**
+- `financial` - Financial analysis and investment research
+- `legal` - Legal compliance and litigation analysis
+- `osint` - Open source intelligence gathering
+- `verification` - Cross-verification and fact-checking
+
+### Confidence Threshold
+
+Set the minimum confidence level for accepting findings:
+
+```bash
+# High confidence (90%+)
+dd config set confidence_threshold 0.9
+
+# Balanced confidence (80%)
+dd config set confidence_threshold 0.8
+
+# Lower threshold for broader results (70%)
+dd config set confidence_threshold 0.7
+```
+
+**Guidelines:**
+- **0.9+** - Critical decisions, high-stakes analysis
+- **0.8-0.89** - Standard business decisions
+- **0.7-0.79** - Preliminary research, broader scope
+- **<0.7** - Exploratory research only
+
+### Source and Timeout Limits
+
+Control research depth and duration:
+
+```bash
+# Quick research settings
+dd config set max_sources 25
+dd config set timeout 300     # 5 minutes
+
+# Standard settings
+dd config set max_sources 50
+dd config set timeout 900     # 15 minutes
+
+# Deep research settings
+dd config set max_sources 100
+dd config set timeout 1800    # 30 minutes
+```
+
+## 📁 Output Configuration
+
+### Default Output Directory
+
+```bash
+# Current directory
+dd config set default_output_dir "./reports"
+
+# Absolute path
+dd config set default_output_dir "/home/user/due-diligence/reports"
+
+# User home directory
+dd config set default_output_dir "~/due-diligence-reports"
+```
+
+The directory will be created automatically if it doesn't exist.
+
+### Default Output Format
+
+```bash
+# Markdown (default, best for reading)
+dd config set default_format "markdown"
+
+# JSON (for programmatic processing)
+dd config set default_format "json"
+
+# PDF (for presentations, requires additional setup)
+dd config set default_format "pdf"
+```
+
+## 🤖 Model Configuration
+
+### Primary Language Model
+
+```bash
+# OpenAI models
+dd config set model "gpt-4o-mini"       # Fast, cost-effective
+dd config set model "gpt-4o"            # Higher quality
+dd config set model "gpt-4-turbo"       # Legacy option
+
+# Anthropic models (if configured)
+dd config set model "claude-3-haiku"    # Fast option
+dd config set model "claude-3-sonnet"   # Balanced option
+```
+
+### Parallel Processing
+
+Control concurrent research operations:
+
+```bash
+# Conservative (lower resource usage)
+dd config set parallel_tasks 2
+
+# Balanced (default)
+dd config set parallel_tasks 3
+
+# Aggressive (faster but more resource intensive)
+dd config set parallel_tasks 5
+```
+
+**Considerations:**
+- More parallel tasks = faster research but higher API costs
+- Limited by API rate limits
+- Consider system resources (CPU, memory)
+
+## 🔧 Advanced Configuration
+
+### Auto-Validation
+
+Control automatic API key validation:
+
+```bash
+# Enable automatic validation (default)
+dd config set auto_validate_keys true
+
+# Disable for faster startup
+dd config set auto_validate_keys false
+```
+
+### Custom Configuration Directory
+
+Override the default configuration location:
+
+```bash
+# Set custom directory
+export DD_CONFIG_DIR="/custom/path/config"
+
+# Then run CLI commands normally
+dd config show
+```
+
+## 📄 Configuration File Format
+
+The configuration is stored as JSON:
+
+```json
+{
+  "default_output_dir": "./reports",
+  "default_format": "markdown",
+  "default_scope": [
+    "financial",
+    "legal",
+    "osint",
+    "verification"
+  ],
+  "confidence_threshold": 0.8,
+  "max_sources": 50,
+  "timeout": 300,
+  "model": "gpt-4o-mini",
+  "parallel_tasks": 3,
+  "auto_validate_keys": true
+}
+```
+
+### Direct File Editing
+
+You can edit the configuration file directly:
+
+```bash
+# Find configuration file location
+dd config show | grep "Configuration file"
+
+# Edit with your preferred editor
+nano ~/.config/due-diligence/config.json
+```
+
+## 🔄 Configuration Management
+
+### Export Configuration
+
+Save your configuration for backup or sharing:
+
+```bash
+# Export with default name
+dd config export
+
+# Export to specific file
+dd config export --output my-config.json
+
+# Export to date-stamped file
+dd config export --output "config-$(date +%Y%m%d).json"
+```
+
+### Import Configuration
+
+Restore or share configurations:
+
+```bash
+# Replace entire configuration
+dd config import my-config.json
+
+# Merge with existing configuration
+dd config import my-config.json --merge
+```
+
+### Reset Configuration
+
+Return to default settings:
+
+```bash
+# Interactive reset (with confirmation)
+dd config reset
+
+# Force reset without confirmation
+dd config reset --yes
+```
+
+## 🎯 Use Case Configurations
+
+### Investment Research
+
+```bash
+dd config set default_scope "financial,verification"
+dd config set confidence_threshold 0.9
+dd config set max_sources 75
+dd config set timeout 1200
+dd config set default_output_dir "./investment-research"
+```
+
+### Legal Due Diligence
+
+```bash
+dd config set default_scope "legal,verification"
+dd config set confidence_threshold 0.85
+dd config set max_sources 100
+dd config set timeout 1800
+dd config set default_output_dir "./legal-analysis"
+```
+
+### Quick Screening
+
+```bash
+dd config set default_scope "financial,osint"
+dd config set confidence_threshold 0.75
+dd config set max_sources 25
+dd config set timeout 600
+dd config set parallel_tasks 5
+```
+
+### Comprehensive Analysis
+
+```bash
+dd config set default_scope "financial,legal,osint,verification"
+dd config set confidence_threshold 0.8
+dd config set max_sources 100
+dd config set timeout 2400
+dd config set parallel_tasks 4
+```
+
+## 📊 Environment-Specific Configurations
+
+### Development Environment
+
+```bash
+# Fast, lightweight settings for testing
+export DD_CONFIG_DIR="./dev-config"
+dd config set max_sources 10
+dd config set timeout 300
+dd config set confidence_threshold 0.7
+dd config set parallel_tasks 2
+```
+
+### Production Environment
+
+```bash
+# Robust settings for production use
+dd config set confidence_threshold 0.85
+dd config set max_sources 75
+dd config set timeout 1800
+dd config set auto_validate_keys true
+dd config set default_output_dir "/production/reports"
+```
+
+### CI/CD Pipeline
+
+```bash
+# Non-interactive, reliable settings
+dd config set confidence_threshold 0.8
+dd config set max_sources 50
+dd config set timeout 900
+dd config set auto_validate_keys false  # Skip validation for speed
+```
+
+## 🚨 Troubleshooting Configuration
+
+### Common Issues
+
+**Configuration Not Found**
+```bash
+# Check file location
+dd config show
+
+# Create default configuration
+dd config reset
+```
+
+**API Key Errors**
+```bash
+# Validate keys
+dd config validate
+
+# Re-enter keys interactively
+dd config set
+
+# Check environment variables
+env | grep -E "(OPENAI|EXA|ANTHROPIC|LANGSMITH)_API_KEY"
+```
+
+**Permission Errors**
+```bash
+# Check configuration directory permissions
+ls -la ~/.config/due-diligence/
+
+# Fix permissions if needed
+chmod 700 ~/.config/due-diligence/
+chmod 600 ~/.config/due-diligence/config.json
+```
+
+**Invalid Settings**
+```bash
+# Validate all settings
+dd config validate
+
+# Reset to defaults
+dd config reset
+
+# Set specific setting
+dd config set confidence_threshold 0.8
+```
+
+### Debug Configuration
+
+Check effective configuration (after all overrides):
+
+```bash
+# Show current effective settings
+dd config show
+
+# Test with specific overrides
+dd research "Test Entity" \
+  --confidence-threshold 0.9 \
+  --max-sources 25 \
+  --timeout 300 \
+  --dry-run  # If available
+```
+
+## 🔗 Related Documentation
+
+- **[Getting Started](./getting-started.md)** - Initial setup and API keys
+- **[Research Guide](./research-guide.md)** - Using configuration in research
+- **[CLI Reference](./cli-reference.md)** - Complete configuration command reference
+- **[Examples](../examples/quick-start.md)** - Configuration examples in practice
+</file>
+
+<file path="user-guide/getting-started.md">
+# Getting Started with Due Diligence CLI
+
+Welcome to the Due Diligence CLI! This guide will walk you through installation, initial setup, and conducting your first research.
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have:
+
+- **Python 3.11+** installed on your system
+- **API Keys** for required services:
+  - **OpenAI API Key** (required) - For AI analysis
+  - **Exa API Key** (required) - For web search and data collection
+  - **Anthropic API Key** (optional) - For additional AI capabilities
+  - **LangSmith API Key** (optional) - For monitoring and observability
+
+## 🚀 Installation
+
+### Option 1: Install from Package (Recommended)
+
+```bash
+pip install due-diligence-exa
+```
+
+### Option 2: Install from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/example/due-diligence-exa
+cd due-diligence-exa
+
+# Install with uv (recommended)
+uv sync
+
+# Or install with pip
+pip install -e .
+```
+
+### Verify Installation
+
+```bash
+dd --version
+```
+
+You should see output like:
+```
+🔍 Due Diligence CLI v1.0.0
+Multi-Agent AI Research Tool
+```
+
+## 🔑 API Key Setup
+
+The CLI requires API keys to function. You can set them up in several ways:
+
+### Option 1: Interactive Configuration (Recommended)
+
+```bash
+dd config set
+```
+
+This will guide you through an interactive setup process.
+
+### Option 2: Environment Variables
+
+```bash
+export OPENAI_API_KEY="your_openai_key_here"
+export EXA_API_KEY="your_exa_key_here"
+export ANTHROPIC_API_KEY="your_anthropic_key_here"  # Optional
+export LANGSMITH_API_KEY="your_langsmith_key_here"  # Optional
+```
+
+### Option 3: Direct Configuration
+
+```bash
+# Set individual keys
+dd config set openai_api_key "your_key_here"
+dd config set exa_api_key "your_key_here"
+```
+
+## ✅ Verify Setup
+
+Check that your configuration is correct:
+
+```bash
+dd config show
+```
+
+Ensure API key validation:
+
+```bash
+dd config validate
+```
+
+Check system health:
+
+```bash
+dd health
+```
+
+## 🔍 Your First Research
+
+Now you're ready to conduct your first due diligence research!
+
+### Basic Research
+
+```bash
+dd research "Tesla Inc"
+```
+
+This will:
+1. **Auto-detect** that Tesla Inc is a company
+2. **Ask interactively** about research scope
+3. **Show real-time progress** as AI agents work
+4. **Generate a report** in the default location
+
+### Quick Non-Interactive Research
+
+```bash
+dd research "Apple Inc" --scope financial,legal --no-interactive
+```
+
+### Custom Output Location
+
+```bash
+dd research "Microsoft Corp" --output ./my-reports/microsoft-analysis.md
+```
+
+## 📊 Understanding the Output
+
+After research completes, you'll see:
+
+- **Executive Summary** - High-level findings and confidence scores
+- **Detailed Report** - Comprehensive analysis from each agent
+- **Source Citations** - All sources used in the research
+- **Confidence Metrics** - Reliability scores for each finding
+
+## 📁 Report Management
+
+### List Your Reports
+
+```bash
+dd reports list
+```
+
+### View a Report
+
+```bash
+dd reports show microsoft-analysis.md
+```
+
+### Export to Different Format
+
+```bash
+dd reports export microsoft-analysis.md --format pdf
+```
+
+## ⚙️ Basic Configuration
+
+### Set Default Output Directory
+
+```bash
+dd config set default_output_dir "./my-reports"
+```
+
+### Set Default Research Scope
+
+```bash
+dd config set default_scope "financial,legal,osint"
+```
+
+### Adjust Confidence Threshold
+
+```bash
+dd config set confidence_threshold 0.9
+```
+
+## 🎯 Next Steps
+
+Now that you have the basics working:
+
+1. **Read the [Research Guide](./research-guide.md)** - Learn advanced research techniques
+2. **Explore [Configuration Options](./configuration.md)** - Customize your experience
+3. **Check out [Examples](../examples/quick-start.md)** - See more use cases
+4. **Review [CLI Reference](./cli-reference.md)** - Complete command documentation
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+**API Key Errors**
+```bash
+dd config validate  # Check key status
+dd config set       # Reset keys interactively
+```
+
+**No Reports Found**
+```bash
+dd config show      # Check default output directory
+mkdir -p ./reports  # Create reports directory
+```
+
+**Permission Errors**
+```bash
+# Ensure output directory is writable
+chmod 755 ./reports
+```
+
+### Getting Help
+
+```bash
+# General help
+dd --help
+
+# Command-specific help
+dd research --help
+dd config --help
+dd reports --help
+
+# System health check
+dd health
+```
+
+## 🔄 What's Next?
+
+You're now ready to conduct professional-grade due diligence research! The CLI will:
+
+- **Guide you interactively** through complex research scenarios
+- **Adapt to different entity types** (companies, individuals, etc.)
+- **Provide rich progress feedback** during long-running analyses
+- **Generate comprehensive reports** with actionable insights
+
+Continue to the [Research Guide](./research-guide.md) to learn advanced research techniques and best practices.
+</file>
+
+<file path="user-guide/reports.md">
+# Reports Management Guide
+
+This guide covers comprehensive management of research reports generated by the Due Diligence CLI, including viewing, organizing, exporting, and maintaining your research archive.
+
+## 📊 Understanding Reports
+
+### Report Structure
+
+Each Due Diligence report contains:
+
+**Executive Summary**
+- Overall confidence assessment
+- Key risk indicators
+- Recommendation summary
+- Research scope coverage
+
+**Detailed Analysis**
+- Findings from each research agent
+- Supporting evidence and citations
+- Confidence scores per section
+- Cross-verification results
+
+**Metadata**
+- Research parameters used
+- Timestamp and duration
+- Sources consulted
+- Session information
+
+### Report Formats
+
+| Format | Extension | Best For |
+|--------|-----------|----------|
+| **Markdown** | `.md` | Reading, editing, version control |
+| **JSON** | `.json` | Programmatic processing, data analysis |
+| **PDF** | `.pdf` | Presentations, formal documents |
+
+## 📋 Listing Reports
+
+### Basic Report Listing
+
+```bash
+# List reports in default directory
+dd reports list
+```
+
+**Output Example:**
+```
+📊 Reports in ./reports
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Name                            ┃ Size     ┃ Modified        ┃ Format   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ tesla-inc-20240315-143022.md    │ 45.3 KB  │ 2024-03-15 14:30│ MD       │
+│ apple-inc-20240315-120045.md    │ 52.1 KB  │ 2024-03-15 12:00│ MD       │
+│ microsoft-corp-analysis.json    │ 38.7 KB  │ 2024-03-14 16:45│ JSON     │
+└─────────────────────────────────┴──────────┴─────────────────┴──────────┘
+```
+
+### Advanced Listing Options
+
+```bash
+# List reports in specific directory
+dd reports list --dir ./investment-research
+
+# Show more reports
+dd reports list --limit 50
+
+# List reports from custom location
+dd reports list --dir /path/to/reports
+```
+
+### Report Naming Conventions
+
+The CLI automatically generates meaningful report names:
+
+**Default Pattern:**
+- `{entity-name}-{date}-{time}.{format}`
+- Example: `tesla-inc-20240315-143022.md`
+
+**Custom Names:**
+- Use `--output` flag during research
+- Example: `dd research "Tesla Inc" --output "./reports/tesla-q1-analysis.md"`
+
+## 👀 Viewing Reports
+
+### View Full Report
+
+```bash
+# View complete report
+dd reports show tesla-inc-20240315-143022.md
+```
+
+**For Markdown reports**, this provides:
+- Formatted display with proper styling
+- Syntax highlighting for code blocks
+- Structured table rendering
+
+### View Report Preview
+
+```bash
+# Show first 50 lines
+dd reports show tesla-inc-20240315-143022.md --lines 50
+
+# Show first 20 lines for quick preview
+dd reports show tesla-inc-20240315-143022.md --lines 20
+```
+
+### View by Session ID
+
+```bash
+# View report using session ID instead of filename
+dd reports show abc12345
+```
+
+This automatically finds the report associated with the session.
+
+### View from Different Directory
+
+```bash
+# View report from custom location
+dd reports show tesla-analysis.md --dir ./investment-research
+```
+
+## 🔄 Report Export and Conversion
+
+### Export to PDF
+
+```bash
+# Export to PDF for presentations
+dd reports export tesla-inc-20240315-143022.md --format pdf
+
+# Export with custom output path
+dd reports export tesla-inc-20240315-143022.md \
+  --format pdf \
+  --output ./presentations/tesla-analysis.pdf
+```
+
+### Export to JSON
+
+```bash
+# Export to JSON for data processing
+dd reports export tesla-inc-20240315-143022.md --format json
+
+# Export to structured data file
+dd reports export tesla-inc-20240315-143022.md \
+  --format json \
+  --output ./data/tesla-structured.json
+```
+
+### Batch Export
+
+```bash
+# Export all reports in directory to PDF
+for report in ./reports/*.md; do
+    dd reports export "$report" --format pdf
+done
+
+# Export recent reports to JSON
+dd reports list --limit 10 | tail -n +4 | while read name size modified format; do
+    if [[ "$format" == "MD" ]]; then
+        dd reports export "$name" --format json
+    fi
+done
+```
+
+## 📁 Report Organization
+
+### Directory Structure
+
+**Recommended Organization:**
+
+```
+./due-diligence/
+├── daily-research/
+│   ├── 2024-03-15/
+│   ├── 2024-03-14/
+│   └── 2024-03-13/
+├── investment-analysis/
+│   ├── tech-sector/
+│   ├── healthcare/
+│   └── energy/
+├── compliance-reports/
+├── archived/
+└── exports/
+    ├── pdf/
+    └── json/
+```
+
+### Moving Reports
+
+```bash
+# Move report to organized location
+mv ./reports/tesla-inc-20240315-143022.md ./investment-analysis/tech-sector/
+
+# Batch move by pattern
+mv ./reports/*apple* ./investment-analysis/tech-sector/
+mv ./reports/*pharma* ./investment-analysis/healthcare/
+```
+
+### Archiving Old Reports
+
+```bash
+# Archive reports older than 30 days
+find ./reports -name "*.md" -mtime +30 -exec mv {} ./archived/ \;
+
+# Compress archived reports
+cd ./archived && tar -czf "reports-$(date +%Y%m).tar.gz" *.md && rm *.md
+```
+
+## 🧹 Report Cleanup
+
+### Automated Cleanup
+
+```bash
+# Preview what will be deleted (dry run)
+dd reports cleanup --dry-run
+
+# Clean up reports older than 30 days
+dd reports cleanup --older-than 30
+
+# Clean up without confirmation
+dd reports cleanup --older-than 60 --yes
+```
+
+### Custom Cleanup
+
+```bash
+# Clean up specific directory
+dd reports cleanup --dir ./temporary-research --older-than 7
+
+# Clean up with different age threshold
+dd reports cleanup --older-than 90  # 3 months
+```
+
+### Selective Cleanup
+
+```bash
+# Keep important reports, clean others
+mkdir -p ./important
+mv ./reports/*critical* ./important/
+mv ./reports/*acquisition* ./important/
+dd reports cleanup --older-than 14
+mv ./important/* ./reports/
+```
+
+## 📈 Report Analytics
+
+### Summary Statistics
+
+```bash
+# Show overall statistics
+dd reports summary
+```
+
+**Example Output:**
+```
+📈 Reports Summary
+📊 Total Reports: 47
+💾 Total Size: 2.3 MB
+📁 Directory: ./reports
+
+By Format
+┏━━━━━━━━━━┳━━━━━━━━━┓
+┃ Format   ┃ Count   ┃
+┡━━━━━━━━━━╇━━━━━━━━━┩
+│ MD       │ 35      │
+│ JSON     │ 10      │
+│ PDF      │ 2       │
+└──────────┴─────────┘
+
+By Age
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Period           ┃ Count   ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│ Last 7 days      │ 12      │
+│ Last 30 days     │ 23      │
+│ Older than 30    │ 12      │
+└──────────────────┴─────────┘
+```
+
+### Directory-Specific Summary
+
+```bash
+# Summary for specific research area
+dd reports summary --dir ./investment-analysis
+
+# Summary for archived reports
+dd reports summary --dir ./archived
+```
+
+## 🔍 Advanced Report Management
+
+### Search and Filter
+
+```bash
+# Find reports by entity name
+find ./reports -name "*tesla*" -type f
+
+# Find reports by date
+find ./reports -name "*2024-03-15*" -type f
+
+# Find large reports (over 50KB)
+find ./reports -size +50k -type f
+
+# Find JSON reports only
+find ./reports -name "*.json" -type f
+```
+
+### Report Validation
+
+```bash
+# Check report integrity
+for report in ./reports/*.md; do
+    if [ -s "$report" ]; then
+        echo "✅ $report - OK"
+    else
+        echo "❌ $report - Empty or corrupted"
+    fi
+done
+
+# Validate JSON reports
+for report in ./reports/*.json; do
+    if python3 -m json.tool "$report" > /dev/null 2>&1; then
+        echo "✅ $report - Valid JSON"
+    else
+        echo "❌ $report - Invalid JSON"
+    fi
+done
+```
+
+### Backup and Sync
+
+```bash
+# Create timestamped backup
+tar -czf "reports-backup-$(date +%Y%m%d).tar.gz" ./reports/
+
+# Sync to cloud storage (example with rsync)
+rsync -av ./reports/ user@server:/backup/due-diligence/
+
+# Sync to cloud service (example with rclone)
+rclone sync ./reports/ mydrive:due-diligence/reports/
+```
+
+## 📊 Report Processing Scripts
+
+### Generate Report Index
+
+```bash
+#!/bin/bash
+# generate-index.sh
+
+OUTPUT="report-index.md"
+echo "# Due Diligence Reports Index" > "$OUTPUT"
+echo "" >> "$OUTPUT"
+echo "Generated on: $(date)" >> "$OUTPUT"
+echo "" >> "$OUTPUT"
+
+for report in ./reports/*.md; do
+    if [ -f "$report" ]; then
+        basename=$(basename "$report")
+        size=$(stat -f%z "$report" 2>/dev/null || stat -c%s "$report")
+        echo "- [$basename](./$basename) ($(numfmt --to=iec $size))" >> "$OUTPUT"
+    fi
+done
+
+echo "Report index generated: $OUTPUT"
+```
+
+### Extract Key Findings
+
+```bash
+#!/bin/bash
+# extract-findings.sh
+
+ENTITY="$1"
+OUTPUT="findings-$(echo "$ENTITY" | tr ' ' '-' | tr '[:upper:]' '[:lower:]').txt"
+
+echo "Key Findings for: $ENTITY" > "$OUTPUT"
+echo "Extracted on: $(date)" >> "$OUTPUT"
+echo "=================================" >> "$OUTPUT"
+
+for report in ./reports/*$(echo "$ENTITY" | tr ' ' '-')*; do
+    if [ -f "$report" ]; then
+        echo "" >> "$OUTPUT"
+        echo "From: $(basename "$report")" >> "$OUTPUT"
+        echo "---" >> "$OUTPUT"
+
+        # Extract executive summary section
+        sed -n '/## Executive Summary/,/## /p' "$report" | head -n -1 >> "$OUTPUT"
+    fi
+done
+
+echo "Key findings extracted: $OUTPUT"
+```
+
+### Generate Comparison Report
+
+```bash
+#!/bin/bash
+# compare-entities.sh
+
+ENTITY1="$1"
+ENTITY2="$2"
+OUTPUT="comparison-$(date +%Y%m%d).md"
+
+echo "# Entity Comparison: $ENTITY1 vs $ENTITY2" > "$OUTPUT"
+echo "" >> "$OUTPUT"
+
+for entity in "$ENTITY1" "$ENTITY2"; do
+    echo "## $entity" >> "$OUTPUT"
+
+    # Find most recent report for entity
+    report=$(ls -t ./reports/*$(echo "$entity" | tr ' ' '-')* 2>/dev/null | head -1)
+
+    if [ -f "$report" ]; then
+        echo "Source: $(basename "$report")" >> "$OUTPUT"
+        sed -n '/## Executive Summary/,/## /p' "$report" | head -n -1 >> "$OUTPUT"
+    else
+        echo "No report found for $entity" >> "$OUTPUT"
+    fi
+
+    echo "" >> "$OUTPUT"
+done
+
+echo "Comparison report generated: $OUTPUT"
+```
+
+## 🚀 Integration Examples
+
+### CI/CD Pipeline Integration
+
+```yaml
+# .github/workflows/due-diligence.yml
+name: Due Diligence Reports
+
+on:
+  schedule:
+    - cron: '0 9 * * 1-5'  # Weekdays at 9 AM
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install CLI
+        run: pip install due-diligence-exa
+
+      - name: Research Watchlist
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+        run: |
+          while IFS= read -r entity; do
+            dd research "$entity" --no-interactive --scope financial
+          done < watchlist.txt
+
+      - name: Upload Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: due-diligence-reports
+          path: ./reports/
+```
+
+### Database Integration
+
+```python
+#!/usr/bin/env python3
+# import-reports.py
+
+import json
+import sqlite3
+from pathlib import Path
+from datetime import datetime
+
+def import_reports_to_db():
+    """Import JSON reports to SQLite database"""
+
+    conn = sqlite3.connect('due_diligence.db')
+
+    # Create table
+    conn.execute('''
+        CREATE TABLE IF NOT EXISTS reports (
+            id INTEGER PRIMARY KEY,
+            entity_name TEXT,
+            report_date TEXT,
+            confidence_score REAL,
+            findings TEXT,
+            file_path TEXT
+        )
+    ''')
+
+    # Import JSON reports
+    for report_file in Path('./reports').glob('*.json'):
+        with open(report_file) as f:
+            data = json.load(f)
+
+        conn.execute('''
+            INSERT INTO reports
+            (entity_name, report_date, confidence_score, findings, file_path)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (
+            data.get('entity_name'),
+            data.get('created_at'),
+            data.get('overall_confidence'),
+            json.dumps(data.get('findings')),
+            str(report_file)
+        ))
+
+    conn.commit()
+    conn.close()
+    print("Reports imported to database")
+
+if __name__ == '__main__':
+    import_reports_to_db()
+```
+
+## 🔗 Related Documentation
+
+- **[Getting Started](./getting-started.md)** - Basic report generation
+- **[Research Guide](./research-guide.md)** - Conducting research that generates reports
+- **[CLI Reference](./cli-reference.md)** - Complete reports command reference
+- **[Examples](../examples/quick-start.md)** - Report management examples
+</file>
+
+<file path="user-guide/research-guide.md">
+# Research Guide
+
+This guide covers comprehensive due diligence research using the CLI tool. Learn how to conduct thorough, professional-grade investigations using AI agents.
+
+## 🎯 Understanding Due Diligence Research
+
+The Due Diligence CLI uses specialized AI agents to investigate entities across multiple dimensions:
+
+- **🏦 Financial Agent** - Financial health, revenue, investments, risks
+- **⚖️ Legal Agent** - Legal issues, compliance, litigation, regulatory status
+- **🔍 OSINT Agent** - Open source intelligence, public records, news analysis
+- **✅ Verification Agent** - Cross-verification, fact-checking, confidence assessment
+
+## 🚀 Basic Research Workflow
+
+### 1. Start Interactive Research
+
+```bash
+dd research "Target Entity Name"
+```
+
+The CLI will:
+1. **Auto-detect entity type** (company, person, organization)
+2. **Confirm analysis approach** with you
+3. **Let you select research scope** interactively
+4. **Ask for custom report location** (or use defaults)
+5. **Execute multi-agent research** with real-time progress
+6. **Generate comprehensive report**
+
+### 2. Entity Type Detection
+
+The system automatically detects:
+
+- **Companies**: "Tesla Inc", "Apple Corp", "Microsoft Corporation"
+- **Individuals**: "John Smith", "CEO Jane Doe"
+- **Organizations**: "Department of Energy", "World Health Organization"
+
+Each type gets optimized research approaches and agent configurations.
+
+## 🎛️ Research Scope Configuration
+
+### Available Research Areas
+
+| Scope | Description | Best For |
+|-------|-------------|----------|
+| `financial` | Financial analysis, revenue, investments | Investment decisions, M&A |
+| `legal` | Legal compliance, litigation, regulatory | Risk assessment, compliance |
+| `osint` | Open source intelligence, public data | Background checks, investigations |
+| `verification` | Cross-verification, fact-checking | High-stakes decisions |
+
+### Interactive Scope Selection
+
+When running interactively, you'll see:
+
+```
+🔍 Research Scope Selection
+Use ↑↓ to navigate, space to toggle, enter to confirm:
+
+→ ☑ financial: Financial health and investment analysis
+  ☐ legal: Legal compliance and litigation analysis
+  ☐ osint: Open source intelligence gathering
+  ☐ verification: Cross-verification and fact-checking
+```
+
+### Command Line Scope
+
+```bash
+# Single scope
+dd research "Tesla Inc" --scope financial
+
+# Multiple scopes
+dd research "Tesla Inc" --scope financial,legal,osint
+
+# All scopes
+dd research "Tesla Inc" --scope financial,legal,osint,verification
+```
+
+## 📊 Research Parameters
+
+### Confidence Threshold
+
+Controls minimum confidence level for findings:
+
+```bash
+# High confidence only (90%+)
+dd research "Tesla Inc" --confidence-threshold 0.9
+
+# Accept medium confidence (70%+)
+dd research "Tesla Inc" --confidence-threshold 0.7
+```
+
+### Source Limits
+
+Control research depth:
+
+```bash
+# Quick research (fewer sources)
+dd research "Tesla Inc" --max-sources 25
+
+# Deep research (more sources)
+dd research "Tesla Inc" --max-sources 100
+```
+
+### Timeout Controls
+
+Manage research duration:
+
+```bash
+# Quick research (5 minutes)
+dd research "Tesla Inc" --timeout 300
+
+# Extended research (30 minutes)
+dd research "Tesla Inc" --timeout 1800
+```
+
+## 🔄 Advanced Research Patterns
+
+### Non-Interactive Research
+
+For automation and scripting:
+
+```bash
+dd research "Apple Inc" \
+  --scope financial,legal \
+  --no-interactive \
+  --output ./reports/apple-$(date +%Y%m%d).md \
+  --confidence-threshold 0.8 \
+  --max-sources 75
+```
+
+### Custom Output Paths
+
+```bash
+# Specific file
+dd research "Tesla Inc" --output ./reports/tesla-analysis.md
+
+# Dynamic naming
+dd research "Tesla Inc" --output "./reports/tesla-$(date +%Y%m%d).md"
+
+# Different format
+dd research "Tesla Inc" --output ./reports/tesla.json --format json
+```
+
+### Session Management
+
+For long-running research:
+
+```bash
+# Save session for later review
+dd research "Complex Entity" --save-session
+
+# Resume interrupted research
+dd research --resume abc12345
+```
+
+## 📈 Understanding Progress
+
+### Real-Time Progress Display
+
+During research, you'll see:
+
+```
+🔍 Research Status
+📋 Phase: Research Execution
+⏱️  Elapsed: 45s
+📊 Progress: 2/4 tasks completed
+
+🤖 Agent Status
+💰 Financial     ████████████ 100%  Complete (confidence: 87.2%)
+⚖️  Legal        █████████░░░ 75%   Processing...
+🔍 Osint         ██████░░░░░░ 50%   Processing...
+✅ Verification  ░░░░░░░░░░░░ 0%    Pending...
+```
+
+### Progress Phases
+
+1. **Initialization** - Setting up agents and workflows
+2. **Research Execution** - Agents gathering and analyzing data
+3. **Synthesis** - Combining findings and generating report
+
+## 📋 Report Structure
+
+### Generated Report Sections
+
+Each report includes:
+
+**Executive Summary**
+- Overall confidence assessment
+- Key findings summary
+- Risk highlights
+- Recommendation summary
+
+**Detailed Analysis by Agent**
+- Financial analysis findings
+- Legal compliance assessment
+- OSINT intelligence gathered
+- Verification cross-checks
+
+**Sources and Citations**
+- All sources used
+- Source reliability scores
+- Date and method of collection
+
+**Confidence Metrics**
+- Per-agent confidence scores
+- Overall confidence rating
+- Uncertainty indicators
+
+### Report Formats
+
+```bash
+# Markdown (default)
+dd research "Tesla Inc" --format markdown
+
+# JSON for programmatic use
+dd research "Tesla Inc" --format json
+
+# PDF for presentations (requires additional setup)
+dd research "Tesla Inc" --format pdf
+```
+
+## 🎯 Research Best Practices
+
+### 1. Entity Name Preparation
+
+**Good Entity Names:**
+- "Tesla Inc" (official company name)
+- "John Smith, CEO of Acme Corp" (with context)
+- "U.S. Department of Energy" (full official name)
+
+**Avoid:**
+- "TSLA" (ticker symbols without context)
+- "John" (too generic without context)
+- "That company we talked about" (vague references)
+
+### 2. Scope Selection Strategy
+
+**For Investment Decisions:**
+```bash
+dd research "Target Company" --scope financial,legal,verification
+```
+
+**For Hiring/Partnership:**
+```bash
+dd research "Potential Partner" --scope osint,legal,verification
+```
+
+**For Comprehensive Analysis:**
+```bash
+dd research "Subject Entity" --scope financial,legal,osint,verification
+```
+
+### 3. Managing Research Time
+
+**Quick Overview (5-10 minutes):**
+```bash
+dd research "Entity" --scope financial --max-sources 25 --timeout 600
+```
+
+**Standard Research (15-30 minutes):**
+```bash
+dd research "Entity" --scope financial,legal --max-sources 50 --timeout 1800
+```
+
+**Deep Investigation (45+ minutes):**
+```bash
+dd research "Entity" --scope financial,legal,osint,verification --max-sources 100 --timeout 3600
+```
+
+## 🔍 Interpreting Results
+
+### Confidence Scores
+
+- **90%+** - High confidence, strong evidence
+- **80-89%** - Good confidence, solid findings
+- **70-79%** - Moderate confidence, some uncertainty
+- **60-69%** - Low confidence, limited evidence
+- **<60%** - Very low confidence, insufficient data
+
+### Risk Indicators
+
+Watch for:
+- **Financial** - Declining revenue, high debt, cash flow issues
+- **Legal** - Active litigation, regulatory violations, compliance gaps
+- **OSINT** - Negative news, reputation issues, public controversies
+- **Verification** - Inconsistent information, conflicting sources
+
+### Decision Making
+
+Use confidence scores and risk indicators to:
+1. **High confidence + Low risk** → Proceed with confidence
+2. **High confidence + High risk** → Proceed with caution and mitigation
+3. **Low confidence + Any risk** → Gather more information before proceeding
+
+## 🔄 Session Management
+
+### Saving Sessions
+
+```bash
+# Automatically save important research
+dd research "Critical Entity" --save-session
+
+# Session ID will be provided (e.g., abc12345)
+```
+
+### Reviewing Sessions
+
+```bash
+# List recent sessions
+dd research status
+
+# View specific session
+dd research status abc12345
+
+# Resume incomplete session
+dd research --resume abc12345
+```
+
+### Session Benefits
+
+- **Audit Trail** - Complete record of research conducted
+- **Resumability** - Continue interrupted research
+- **Reproducibility** - Understand how conclusions were reached
+- **Collaboration** - Share session IDs with team members
+
+## 🚨 Troubleshooting Research
+
+### Common Issues
+
+**Low Confidence Scores**
+- Increase `--max-sources` for more data
+- Expand scope to include more research areas
+- Check entity name accuracy and specificity
+
+**Research Timeouts**
+- Increase `--timeout` parameter
+- Reduce `--max-sources` for faster completion
+- Use `--save-session` to preserve partial progress
+
+**No Results Found**
+- Verify entity name spelling and format
+- Try alternative entity names or identifiers
+- Check that entity has sufficient public information
+
+### Getting Better Results
+
+1. **Use official entity names** when possible
+2. **Include context** for common names (e.g., "John Smith, CEO of Acme Corp")
+3. **Start broad, then narrow** scope based on initial findings
+4. **Adjust confidence thresholds** based on decision criticality
+5. **Save sessions** for important research that might need review
+
+## 📚 Next Steps
+
+- **[Configuration Guide](./configuration.md)** - Customize your research settings
+- **[Reports Management](./reports.md)** - Managing and exporting reports
+- **[CLI Reference](./cli-reference.md)** - Complete command documentation
+- **[Advanced Examples](../examples/advanced.md)** - Complex research scenarios
+</file>
+
+<file path="README.md">
+# Due Diligence CLI Documentation
+
+Welcome to the comprehensive documentation for the Due Diligence CLI - a modern, multi-agent AI research tool for conducting thorough due diligence investigations.
+
+## 📚 Documentation Structure
+
+This documentation is organized into several key sections:
+
+### 🎯 [User Guide](./user-guide/)
+Complete guides for using the CLI tool effectively:
+- **[Getting Started](./user-guide/getting-started.md)** - Installation, setup, and first research
+- **[Research Guide](./user-guide/research-guide.md)** - Conducting comprehensive due diligence research
+- **[Configuration](./user-guide/configuration.md)** - Customizing your CLI experience
+- **[Reports Management](./user-guide/reports.md)** - Managing and exporting research reports
+- **[CLI Reference](./user-guide/cli-reference.md)** - Complete command reference
+
+### 🏗️ [Design & Architecture](./design/)
+Technical documentation about the system design:
+- **[System Overview](./design/overview.md)** - High-level architecture and concepts
+- **[Multi-Agent Framework](./design/multi-agent.md)** - How the AI agents work together
+- **[CLI Architecture](./design/cli-architecture.md)** - Modern CLI implementation details
+- **[Data Flow](./design/data-flow.md)** - How information flows through the system
+
+### 🔌 [API Reference](./api/)
+Technical API documentation:
+- **[Core APIs](./api/core.md)** - Core system APIs
+- **[Agent APIs](./api/agents.md)** - Individual agent interfaces
+- **[Workflow APIs](./api/workflows.md)** - Research workflow interfaces
+
+### 💡 [Examples](./examples/)
+Practical examples and use cases:
+- **[Quick Start Examples](./examples/quick-start.md)** - Get up and running fast
+- **[Advanced Use Cases](./examples/advanced.md)** - Complex research scenarios
+- **[Automation Scripts](./examples/automation.md)** - Scripting and automation
+
+## 🚀 Quick Start
+
+```bash
+# Install the CLI
+pip install due-diligence-exa
+
+# Configure API keys
+dd config set
+
+# Run your first research
+dd research "Tesla Inc"
+```
+
+## 🔗 Quick Links
+
+- **[Getting Started Guide](./user-guide/getting-started.md)** - Begin here for new users
+- **[CLI Reference](./user-guide/cli-reference.md)** - Complete command documentation
+- **[System Architecture](./design/overview.md)** - Understanding how it works
+- **[Examples](./examples/quick-start.md)** - See it in action
+
+## 🎯 Key Features
+
+- **Multi-Agent AI Research** - Specialized agents for financial, legal, OSINT, and verification analysis
+- **Interactive CLI** - Modern, user-friendly command-line interface with rich progress displays
+- **Flexible Configuration** - Customize research scope, output formats, and system behavior
+- **Report Management** - Generate, export, and manage research reports in multiple formats
+- **Session Persistence** - Save and resume long-running research sessions
+- **Smart Entity Detection** - Automatically detect and optimize research for companies vs. individuals
+
+## 🆘 Getting Help
+
+- **CLI Help**: Use `dd --help` or `dd <command> --help` for command-specific help
+- **Documentation**: Browse this documentation for comprehensive guides
+- **Issues**: Report bugs and request features on our GitHub repository
+
+---
+
+*This documentation focuses on practical usage and operation of the Due Diligence CLI system. For development and contribution guidelines, see the project repository.*
+</file>
+
+</files>
