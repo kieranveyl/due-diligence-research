@@ -172,7 +172,7 @@ class MinimalWorkflow:
         }
 
     async def run(self, entity_name: str, entity_type: str, scopes: list[str],
-                  session_id: str = None) -> AsyncGenerator[dict[str, Any], None]:
+                  session_id: str = None) -> AsyncGenerator[dict[str, Any]]:
         """Run the minimal workflow and yield progress events"""
 
         start_time = datetime.now()

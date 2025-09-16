@@ -1,8 +1,7 @@
 from typing import Any
 
-from langchain_exa import ExaSearchResults, ExaSearchRetriever, ExaFindSimilarResults
 from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain_core.tools import tool
+from langchain_exa import ExaFindSimilarResults, ExaSearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -36,7 +35,7 @@ class ResearchAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Auto search for optimal results without manual type selection
                 tools.append(ExaSearchResults(
                     name="exa_auto_search",
@@ -47,7 +46,7 @@ class ResearchAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Keyword search for precise term matching
                 tools.append(ExaSearchResults(
                     name="exa_keyword_search",
@@ -57,7 +56,7 @@ class ResearchAgent:
                     type="keyword",
                     text_contents_options=True
                 ))
-                
+
                 # Large-scale comprehensive search for due diligence
                 tools.append(ExaSearchResults(
                     name="exa_comprehensive_search",
@@ -68,7 +67,7 @@ class ResearchAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Find similar content for verification and expansion
                 tools.append(ExaFindSimilarResults(
                     name="exa_find_similar",
@@ -77,7 +76,7 @@ class ResearchAgent:
                     api_key=settings.exa_api_key,
                     text_contents_options=True
                 ))
-                
+
                 print("✅ Advanced Exa tool suite initialized successfully")
             except Exception as e:
                 print(f"Warning: Failed to initialize Exa tools: {e}")

@@ -6,8 +6,8 @@ from src.agents.planner import PlanningAgent
 from src.agents.supervisor import SupervisorAgent
 from src.agents.task_agents.financial import FinancialAgent
 from src.agents.task_agents.legal import LegalAgent
-from src.agents.task_agents.research import ResearchAgent
 from src.agents.task_agents.osint import OSINTAgent
+from src.agents.task_agents.research import ResearchAgent
 from src.agents.task_agents.verification import VerificationAgent
 from src.state.definitions import ResearchTask
 

@@ -30,8 +30,8 @@ def mock_api_keys():
 @pytest.fixture
 def workflow():
     """Create workflow instance for testing"""
-    from langchain_core.tools import BaseTool
     from langchain_core.messages import AIMessage
+    from langchain_core.tools import BaseTool
 
     # Create mock tool classes that inherit from BaseTool
     class MockExaTool(BaseTool):
@@ -59,7 +59,7 @@ def workflow():
         # Mock the OpenAI model with proper async methods
         async def mock_ainvoke(*args, **kwargs):
             return AIMessage(content="Mock response")
-        
+
         mock_model = MagicMock()
         mock_model.ainvoke = mock_ainvoke
         mock_model.invoke = MagicMock(return_value=AIMessage(content="Mock response"))

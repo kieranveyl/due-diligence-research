@@ -1,8 +1,8 @@
 from typing import Any
 
-from langchain_core.tools import tool
-from langchain_exa import ExaSearchResults, ExaFindSimilarResults
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_core.tools import tool
+from langchain_exa import ExaFindSimilarResults, ExaSearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -42,7 +42,7 @@ class VerificationAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Primary source neural search
                 tools.append(ExaSearchResults(
                     name="exa_primary_sources_neural",
@@ -59,7 +59,7 @@ class VerificationAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Fact-checking and verification keyword search
                 tools.append(ExaSearchResults(
                     name="exa_verification_keyword",
@@ -70,7 +70,7 @@ class VerificationAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Academic and research sources
                 tools.append(ExaSearchResults(
                     name="exa_academic_sources",
@@ -86,7 +86,7 @@ class VerificationAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Find corroborating sources with expanded scope
                 tools.append(ExaFindSimilarResults(
                     name="exa_find_corroborating_sources",
@@ -96,7 +96,7 @@ class VerificationAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 print("✅ Advanced Exa verification tool suite initialized successfully")
             except Exception as e:
                 print(f"Warning: Failed to initialize Exa verification tools: {e}")

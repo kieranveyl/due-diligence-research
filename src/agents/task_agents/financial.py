@@ -1,8 +1,8 @@
 from typing import Any
 
-from langchain_core.tools import tool
-from langchain_exa import ExaSearchResults, ExaFindSimilarResults
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_core.tools import tool
+from langchain_exa import ExaFindSimilarResults, ExaSearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -37,7 +37,7 @@ class FinancialAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Financial data comprehensive search
                 tools.append(ExaSearchResults(
                     name="exa_financial_comprehensive",
@@ -49,7 +49,7 @@ class FinancialAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Earnings and quarterly reports search
                 tools.append(ExaSearchResults(
                     name="exa_earnings_reports",
@@ -60,7 +60,7 @@ class FinancialAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Financial keyword search for specific metrics/ratios
                 tools.append(ExaSearchResults(
                     name="exa_financial_keyword",
@@ -70,7 +70,7 @@ class FinancialAgent:
                     type="keyword",
                     text_contents_options=True
                 ))
-                
+
                 # Find similar financial documents for verification
                 tools.append(ExaFindSimilarResults(
                     name="exa_find_similar_financial",
@@ -80,7 +80,7 @@ class FinancialAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 print("✅ Advanced Exa financial tool suite initialized successfully")
             except Exception as e:
                 print(f"Warning: Failed to initialize Exa financial tools: {e}")

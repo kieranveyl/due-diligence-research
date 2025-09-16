@@ -2,13 +2,13 @@
 Security and Encryption Module for Due Diligence System
 """
 
-from .encryption import SessionEncryption, CredentialManager
 from .audit import AuditLogger, SecurityEventLogger
+from .encryption import CredentialManager, SessionEncryption
 from .monitoring import SecurityMonitor
 
 __all__ = [
     "SessionEncryption",
-    "CredentialManager", 
+    "CredentialManager",
     "AuditLogger",
     "SecurityEventLogger",
     "SecurityMonitor"

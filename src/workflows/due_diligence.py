@@ -28,7 +28,7 @@ class DueDiligenceWorkflow:
         self.checkpointer = None
         self.graph = self._build_graph()
         self.compiled = None
-    
+
     async def _ensure_compiled(self):
         """Ensure the graph is compiled with checkpointer"""
         if self.compiled is None:
@@ -195,7 +195,7 @@ class DueDiligenceWorkflow:
 
         # Ensure graph is compiled with checkpointer
         compiled_graph = await self._ensure_compiled()
-        
+
         # Stream results with checkpointing
         async for event in compiled_graph.astream(
             initial_state,

@@ -1,8 +1,8 @@
 from typing import Any
 
-from langchain_core.tools import tool
-from langchain_exa import ExaSearchResults, ExaFindSimilarResults
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_core.tools import tool
+from langchain_exa import ExaFindSimilarResults, ExaSearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -42,7 +42,7 @@ class OSINTAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Public records and directories with full content
                 tools.append(ExaSearchResults(
                     name="exa_public_records",
@@ -58,7 +58,7 @@ class OSINTAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Reputation and news monitoring with sentiment analysis
                 tools.append(ExaSearchResults(
                     name="exa_reputation_monitoring",
@@ -75,7 +75,7 @@ class OSINTAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # OSINT keyword search for precise terms
                 tools.append(ExaSearchResults(
                     name="exa_osint_keyword",
@@ -85,7 +85,7 @@ class OSINTAgent:
                     type="keyword",
                     text_contents_options=True
                 ))
-                
+
                 # Find similar digital assets and related entities
                 tools.append(ExaFindSimilarResults(
                     name="exa_find_similar_digital_assets",
@@ -95,7 +95,7 @@ class OSINTAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 print("✅ Advanced Exa OSINT tool suite initialized successfully")
             except Exception as e:
                 print(f"Warning: Failed to initialize Exa OSINT tools: {e}")
@@ -120,7 +120,7 @@ class OSINTAgent:
             # Mock implementation - would integrate with WHOIS, DNS lookup, and hosting analysis tools
             return f"Mock domain technical analysis for: {domain} - Registrar: GoDaddy, Hosting: AWS, SSL: Valid"
 
-        @tool  
+        @tool
         def breach_security_monitoring(entity_identifier: str, search_type: str = "email") -> str:
             """Check for data breaches, exposed credentials, and security incidents"""
             # Mock implementation - would integrate with HaveIBeenPwned, breach databases
@@ -139,8 +139,8 @@ class OSINTAgent:
             return f"Mock digital forensics analysis for {target_identifier} (type: {analysis_type}) - Clean profile"
 
         tools.extend([
-            domain_technical_analysis, 
-            breach_security_monitoring, 
+            domain_technical_analysis,
+            breach_security_monitoring,
             dark_web_threat_monitoring,
             digital_forensics_analysis
         ])

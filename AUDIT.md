@@ -473,6 +473,7 @@ Answer: A hierarchical tree view showing dependencies
 - **Resume interface:** When resuming, should users see: - The original plan with completed items checked off? - A summary of what was completed vs what remains? - The option to modify the remaining plan before continuing?
   Answer: The plan with completed items checked off. and then a summary of what's next and the ability to modify the remaining plan before continuing.
 - **Session browsing:** How should users browse previous sessions - list view, search by entity name, or filter by date/status?
+  Answer: List view. dd sessions list -> Report Title: session ID.
 
 ### **7. Error Handling & Recovery Flows:**
 
@@ -489,16 +490,11 @@ Answer: A hierarchical tree view showing dependencies
     - Suggest alternative data sources or cached information?
     - Allow users to queue requests for later automatic retry?
 
+Answer: This will be implemented in the next release.
+
 ### **8. Advanced User Customization:**
 
-- **Confidence threshold adjustment:** Should this be:
-    - A global setting in configuration?
-    - Per-agent customizable (stricter for legal, looser for OSINT)?
-    - Adjustable per query based on use case?
-- **Output verbosity levels:** Should the CLI support:
-    - Silent mode (minimal output, results only)?
-    - Standard mode (progress + summary)?
-    - Verbose mode (detailed agent logs + debugging info)?
-    - Expert mode (raw API responses + confidence calculations)?
-
-\*\*Which aspects of this flow are most critical for your use case, and how do you envision users primarily interacting with the system?
+- **Confidence threshold adjustment:** Should this be: - A global setting in configuration? - Per-agent customizable (stricter for legal, looser for OSINT)? - Adjustable per query based on use case?
+  Answer: This will be implemented in the next release.
+- **Output verbosity levels:** Should the CLI support: - Silent mode (minimal output, results only)? - Standard mode (progress + summary)? - Verbose mode (detailed agent logs + debugging info)? - Expert mode (raw API responses + confidence calculations)?
+  Answer: This will be implemented in the next release. But default to Standard mode and silent. Standard is interactive as discussed above. Silent is non-interactive and minimal output. But can check the STATUS of the report by calling dd session status [session ID] or something.

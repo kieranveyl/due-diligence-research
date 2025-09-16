@@ -9,10 +9,11 @@ from fastapi.responses import StreamingResponse
 from src.config.settings import settings
 from src.workflows.due_diligence import DueDiligenceWorkflow
 
+
 def _make_serializable(obj):
     """Convert complex objects to JSON-serializable format"""
     from enum import Enum
-    
+
     if hasattr(obj, 'dict'):
         return obj.dict()
     elif isinstance(obj, Enum):
@@ -140,10 +141,10 @@ async def debug_workflow():
         test_workflow = workflow
         if test_workflow is None:
             return {"error": "Workflow not initialized"}
-        
+
         # Test checkpointer
         checkpointer = await test_workflow._ensure_compiled()
-        
+
         return {
             "status": "success",
             "workflow_initialized": test_workflow is not None,
@@ -159,7 +160,7 @@ async def debug_simple_run():
     try:
         import uuid
         thread_id = str(uuid.uuid4())
-        
+
         # Test basic state creation
         initial_state = {
             "messages": [],
@@ -180,29 +181,29 @@ async def debug_simple_run():
             "human_feedback_required": False,
             "completed": False
         }
-        
+
         config = {
             "configurable": {
                 "thread_id": thread_id,
                 "checkpoint_ns": "due_diligence"
             }
         }
-        
+
         # Test just one step
         compiled_graph = await workflow._ensure_compiled()
         result = await compiled_graph.ainvoke(initial_state, config=config)
-        
+
         return {
             "status": "success",
             "thread_id": thread_id,
             "result_keys": list(result.keys()) if result else [],
             "completed": result.get("completed", False) if result else False
         }
-        
+
     except Exception as e:
         import traceback
         return {
-            "error": str(e), 
+            "error": str(e),
             "type": str(type(e)),
             "traceback": traceback.format_exc()
         }

@@ -1,8 +1,8 @@
 from typing import Any
 
-from langchain_core.tools import tool
-from langchain_exa import ExaSearchResults, ExaFindSimilarResults
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_core.tools import tool
+from langchain_exa import ExaFindSimilarResults, ExaSearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -33,7 +33,7 @@ class LegalAgent:
                     num_results=35,
                     api_key=settings.exa_api_key,
                     include_domains=[
-                        "courtlistener.com", "justia.com", "findlaw.com", 
+                        "courtlistener.com", "justia.com", "findlaw.com",
                         "sec.gov", "ftc.gov", "justice.gov", "uscourts.gov",
                         "supremecourt.gov", "law.cornell.edu", "caselaw.findlaw.com"
                     ],
@@ -41,7 +41,7 @@ class LegalAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Court records and case law search
                 tools.append(ExaSearchResults(
                     name="exa_court_records",
@@ -56,7 +56,7 @@ class LegalAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Regulatory and compliance search
                 tools.append(ExaSearchResults(
                     name="exa_regulatory_compliance",
@@ -71,7 +71,7 @@ class LegalAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 # Legal keyword search for precise terms
                 tools.append(ExaSearchResults(
                     name="exa_legal_keyword",
@@ -81,7 +81,7 @@ class LegalAgent:
                     type="keyword",
                     text_contents_options=True
                 ))
-                
+
                 # Find similar legal documents for precedent research
                 tools.append(ExaFindSimilarResults(
                     name="exa_find_similar_legal",
@@ -91,7 +91,7 @@ class LegalAgent:
                     text_contents_options=True,
                     highlights=True
                 ))
-                
+
                 print("✅ Advanced Exa legal tool suite initialized successfully")
             except Exception as e:
                 print(f"Warning: Failed to initialize Exa legal tools: {e}")
@@ -116,7 +116,7 @@ class LegalAgent:
             # Mock implementation - would integrate with sanctions screening services
             return f"Mock sanctions screening for {entity_name} against lists: {lists} - Status: Clear"
 
-        @tool  
+        @tool
         def litigation_database_search(entity_name: str, court_level: str = "all") -> str:
             """Search specialized litigation databases for case records"""
             # Mock implementation - would integrate with Westlaw, LexisNexis, etc.
@@ -124,7 +124,7 @@ class LegalAgent:
 
         @tool
         def compliance_regulatory_check(entity_name: str, industry: str = "", regulations: str = "") -> str:
-            """Check regulatory compliance status across multiple agencies"""  
+            """Check regulatory compliance status across multiple agencies"""
             # Mock implementation - would integrate with regulatory databases
             return f"Mock compliance check for {entity_name} in {industry}, regulations: {regulations}"
 

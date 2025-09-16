@@ -3,11 +3,10 @@ Audit Logging and Security Event Tracking
 """
 
 import json
-import time
-from datetime import datetime, timezone, timedelta
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from datetime import UTC, datetime, timedelta
 from enum import Enum
+from pathlib import Path
+from typing import Any
 
 import structlog
 from structlog.stdlib import LoggerFactory
@@ -34,15 +33,15 @@ class SecurityEventType(Enum):
 
 class AuditLogger:
     """Structured audit logging for compliance and security"""
-    
+
     def __init__(self):
         self.setup_structured_logging()
         self.logger = structlog.get_logger("audit")
         self.log_dir = self._ensure_log_directory()
-    
+
     def setup_structured_logging(self):
         """Configure structlog for structured audit logging"""
-        
+
         # Configure structlog processors
         structlog.configure(
             processors=[
@@ -61,28 +60,28 @@ class AuditLogger:
             wrapper_class=structlog.stdlib.BoundLogger,
             cache_logger_on_first_use=True,
         )
-    
+
     def _ensure_log_directory(self) -> Path:
         """Ensure audit log directory exists"""
         log_dir = Path.home() / ".config" / "due-diligence" / "audit-logs"
         log_dir.mkdir(parents=True, exist_ok=True)
         return log_dir
-    
+
     async def log_security_event(
         self,
         event_type: SecurityEventType,
-        user_id: Optional[str] = None,
-        session_id: Optional[str] = None,
-        resource_id: Optional[str] = None,
-        details: Optional[Dict[str, Any]] = None,
+        user_id: str | None = None,
+        session_id: str | None = None,
+        resource_id: str | None = None,
+        details: dict[str, Any] | None = None,
         success: bool = True,
-        error_message: Optional[str] = None
+        error_message: str | None = None
     ):
         """Log a security event with full context"""
-        
+
         event_data = {
             "event_type": event_type.value,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "user_id": user_id or "system",
             "session_id": session_id,
             "resource_id": resource_id,
@@ -91,7 +90,7 @@ class AuditLogger:
             "details": details or {},
             "source": "due_diligence_v2"
         }
-        
+
         # Log to structured logger
         if success:
             self.logger.info(
@@ -103,28 +102,28 @@ class AuditLogger:
                 "Security event failed",
                 **event_data
             )
-        
+
         # Also save to daily audit file
         await self._write_audit_file(event_data)
-    
-    async def _write_audit_file(self, event_data: Dict[str, Any]):
+
+    async def _write_audit_file(self, event_data: dict[str, Any]):
         """Write audit event to daily file"""
         today = datetime.now().strftime("%Y-%m-%d")
         audit_file = self.log_dir / f"audit-{today}.jsonl"
-        
+
         try:
             with open(audit_file, "a") as f:
                 f.write(json.dumps(event_data) + "\n")
         except Exception as e:
             # Use fallback logger if audit file write fails
             self.logger.error("Failed to write audit file", error=str(e))
-    
+
     async def log_session_event(
         self,
         event_type: SecurityEventType,
         session_id: str,
-        user_id: Optional[str] = None,
-        details: Optional[Dict[str, Any]] = None
+        user_id: str | None = None,
+        details: dict[str, Any] | None = None
     ):
         """Log session-related security event"""
         await self.log_security_event(
@@ -134,13 +133,13 @@ class AuditLogger:
             resource_id=session_id,
             details=details
         )
-    
+
     async def log_credential_event(
         self,
         event_type: SecurityEventType,
         service: str,
         credential_type: str,
-        user_id: Optional[str] = None,
+        user_id: str | None = None,
         success: bool = True
     ):
         """Log credential-related security event"""
@@ -154,17 +153,17 @@ class AuditLogger:
             },
             success=success
         )
-    
+
     async def log_api_usage(
         self,
         service: str,
         endpoint: str,
-        session_id: Optional[str] = None,
-        user_id: Optional[str] = None,
-        response_size: Optional[int] = None,
-        duration_ms: Optional[float] = None,
+        session_id: str | None = None,
+        user_id: str | None = None,
+        response_size: int | None = None,
+        duration_ms: float | None = None,
         success: bool = True,
-        error_code: Optional[str] = None
+        error_code: str | None = None
     ):
         """Log API usage for audit trail"""
         await self.log_security_event(
@@ -181,40 +180,40 @@ class AuditLogger:
             },
             success=success
         )
-    
+
     async def search_audit_logs(
         self,
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
-        event_types: Optional[List[SecurityEventType]] = None,
-        user_id: Optional[str] = None,
-        session_id: Optional[str] = None,
+        start_date: datetime | None = None,
+        end_date: datetime | None = None,
+        event_types: list[SecurityEventType] | None = None,
+        user_id: str | None = None,
+        session_id: str | None = None,
         limit: int = 100
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Search audit logs with filters"""
-        
+
         results = []
-        
+
         # Determine date range
         if not start_date:
             start_date = datetime.now() - timedelta(days=7)  # Default last 7 days
         if not end_date:
             end_date = datetime.now()
-        
+
         # Search through daily audit files
         current_date = start_date.date()
         while current_date <= end_date.date() and len(results) < limit:
             audit_file = self.log_dir / f"audit-{current_date.strftime('%Y-%m-%d')}.jsonl"
-            
+
             if audit_file.exists():
-                with open(audit_file, "r") as f:
+                with open(audit_file) as f:
                     for line in f:
                         if len(results) >= limit:
                             break
-                        
+
                         try:
                             event = json.loads(line.strip())
-                            
+
                             # Apply filters
                             if event_types and event.get("event_type") not in [et.value for et in event_types]:
                                 continue
@@ -222,40 +221,40 @@ class AuditLogger:
                                 continue
                             if session_id and event.get("session_id") != session_id:
                                 continue
-                            
+
                             # Check timestamp within range
                             event_time = datetime.fromisoformat(event.get("timestamp", ""))
                             if start_date <= event_time <= end_date:
                                 results.append(event)
-                        
+
                         except (json.JSONDecodeError, ValueError):
                             continue
-            
+
             current_date += timedelta(days=1)
-        
+
         return results[-limit:]  # Return most recent results
-    
+
     async def cleanup_old_logs(self, retention_days: int = None):
         """Clean up audit logs older than retention period"""
         if retention_days is None:
             retention_days = getattr(settings, 'audit_log_retention_days', 90)
-        
+
         cutoff_date = datetime.now() - timedelta(days=retention_days)
         deleted_count = 0
-        
+
         for log_file in self.log_dir.glob("audit-*.jsonl"):
             try:
                 # Extract date from filename
                 date_str = log_file.stem.replace("audit-", "")
                 file_date = datetime.strptime(date_str, "%Y-%m-%d")
-                
+
                 if file_date < cutoff_date:
                     log_file.unlink()
                     deleted_count += 1
-                    
+
             except (ValueError, OSError) as e:
                 self.logger.warning(f"Failed to process log file {log_file}: {e}")
-        
+
         if deleted_count > 0:
             await self.log_security_event(
                 event_type=SecurityEventType.SYSTEM_ACCESS,
@@ -269,16 +268,16 @@ class AuditLogger:
 
 class SecurityEventLogger:
     """High-level security event logging interface"""
-    
+
     def __init__(self):
         self.audit_logger = AuditLogger()
-    
+
     async def log_research_session_start(
         self,
         session_id: str,
         entity_name: str,
-        user_id: Optional[str] = None,
-        scope: Optional[List[str]] = None
+        user_id: str | None = None,
+        scope: list[str] | None = None
     ):
         """Log the start of a research session"""
         await self.audit_logger.log_session_event(
@@ -291,14 +290,14 @@ class SecurityEventLogger:
                 "action": "research_session_started"
             }
         )
-    
+
     async def log_research_session_complete(
         self,
         session_id: str,
         duration_seconds: float,
         confidence_score: float,
         sources_count: int,
-        user_id: Optional[str] = None
+        user_id: str | None = None
     ):
         """Log the completion of a research session"""
         await self.audit_logger.log_session_event(
@@ -312,13 +311,13 @@ class SecurityEventLogger:
                 "sources_count": sources_count
             }
         )
-    
+
     async def log_data_export(
         self,
         session_id: str,
         export_format: str,
-        file_path: Optional[str] = None,
-        user_id: Optional[str] = None
+        file_path: str | None = None,
+        user_id: str | None = None
     ):
         """Log data export events"""
         await self.audit_logger.log_security_event(
@@ -332,14 +331,14 @@ class SecurityEventLogger:
                 "action": "data_exported"
             }
         )
-    
+
     async def log_error_event(
         self,
         error_type: str,
         error_message: str,
-        session_id: Optional[str] = None,
-        user_id: Optional[str] = None,
-        details: Optional[Dict[str, Any]] = None
+        session_id: str | None = None,
+        user_id: str | None = None,
+        details: dict[str, Any] | None = None
     ):
         """Log error events for security monitoring"""
         await self.audit_logger.log_security_event(
