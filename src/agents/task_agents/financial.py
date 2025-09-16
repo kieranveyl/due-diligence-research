@@ -1,6 +1,8 @@
 from typing import Any
 
 from langchain_core.tools import tool
+from langchain_exa import ExaSearchResults, ExaFindSimilarResults
+from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -21,32 +23,90 @@ class FinancialAgent:
     def _initialize_tools(self):
         tools = []
 
-        # Add financial analysis tools
-        @tool
-        def financial_data_search(query: str, entity_name: str = "") -> str:
-            """Search for financial information about companies including SEC filings, financial statements, and market data"""
-            # Mock implementation - would integrate with real financial APIs
-            return f"Financial data search results for: {query} | Entity: {entity_name}"
+        # Add comprehensive Exa tools for financial analysis
+        if settings.has_exa_key:
+            try:
+                # SEC filings neural search with full content
+                tools.append(ExaSearchResults(
+                    name="exa_sec_filings_neural",
+                    description="Deep neural search for SEC filings with full content extraction. Best for comprehensive financial document analysis.",
+                    num_results=20,
+                    api_key=settings.exa_api_key,
+                    include_domains=["sec.gov", "investor.gov", "edgar.sec.gov"],
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Financial data comprehensive search
+                tools.append(ExaSearchResults(
+                    name="exa_financial_comprehensive",
+                    description="Large-scale financial research with full content from authoritative sources. For thorough financial due diligence.",
+                    num_results=40,
+                    api_key=settings.exa_api_key,
+                    include_domains=["sec.gov", "finance.yahoo.com", "bloomberg.com", "marketwatch.com", "morningstar.com", "fool.com", "seekingalpha.com"],
+                    type="auto",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Earnings and quarterly reports search
+                tools.append(ExaSearchResults(
+                    name="exa_earnings_reports",
+                    description="Search for earnings calls, quarterly reports, and earnings analysis with full content",
+                    num_results=15,
+                    api_key=settings.exa_api_key,
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Financial keyword search for specific metrics/ratios
+                tools.append(ExaSearchResults(
+                    name="exa_financial_keyword",
+                    description="Precise keyword search for specific financial metrics, ratios, or technical terms",
+                    num_results=12,
+                    api_key=settings.exa_api_key,
+                    type="keyword",
+                    text_contents_options=True
+                ))
+                
+                # Find similar financial documents for verification
+                tools.append(ExaFindSimilarResults(
+                    name="exa_find_similar_financial",
+                    description="Find similar financial documents for cross-verification and expanded analysis",
+                    num_results=10,
+                    api_key=settings.exa_api_key,
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                print("✅ Advanced Exa financial tool suite initialized successfully")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Exa financial tools: {e}")
 
-        @tool
-        def sec_filings_search(company_name: str, filing_type: str = "10-K") -> str:
-            """Search SEC EDGAR database for company filings (10-K, 10-Q, 8-K, etc.)"""
-            # Mock implementation - would integrate with SEC EDGAR API
-            return f"SEC filings search for {company_name}, type: {filing_type}"
+        # Add minimal Tavily for immediate market updates only
+        if settings.has_tavily_key:
+            try:
+                tools.append(TavilySearchResults(
+                    name="tavily_urgent_market_updates",
+                    description="ONLY for urgent market news and immediate financial updates within hours. Use minimally - Exa is primary source.",
+                    max_results=3,
+                    api_wrapper_kwargs={"api_key": settings.tavily_api_key}
+                ))
+                print("✅ Tavily auxiliary market tool initialized")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Tavily market tool: {e}")
 
-        @tool
-        def market_analysis(company_name: str, metrics: str = "stock,revenue,valuation") -> str:
-            """Analyze market performance and financial metrics for a company"""
-            # Mock implementation - would integrate with financial data providers
-            return f"Market analysis for {company_name}, metrics: {metrics}"
+        # Add fallback tools if no APIs available
+        if not tools:
+            @tool
+            def dummy_financial_search(query: str, entity_name: str = "") -> str:
+                """Dummy financial search tool for development/testing"""
+                return f"Mock financial search results for: {query} | Entity: {entity_name}"
 
-        @tool
-        def credit_rating_check(entity_name: str) -> str:
-            """Check credit ratings and financial stability indicators"""
-            # Mock implementation - would integrate with credit rating agencies
-            return f"Credit rating information for {entity_name}"
-
-        tools.extend([financial_data_search, sec_filings_search, market_analysis, credit_rating_check])
+            tools.append(dummy_financial_search)
+            print("⚠️ Using dummy financial tools - configure API keys for real functionality")
 
         return tools
 
@@ -56,18 +116,36 @@ class FinancialAgent:
             tools=self.tools,
             prompt="""You are a financial analysis specialist focused on comprehensive financial due diligence.
 
-            Your responsibilities:
-            1. Analyze financial statements, SEC filings, and regulatory documents
-            2. Assess financial health, liquidity, and solvency
-            3. Evaluate market performance and valuation metrics
-            4. Identify financial risks, debt obligations, and credit issues
-            5. Analyze revenue trends, profitability, and growth patterns
-            6. Review regulatory compliance and financial reporting quality
+            AVAILABLE TOOLS:
+            - exa_sec_filings_neural: Deep SEC filings search with full content extraction
+            - exa_financial_comprehensive: Large-scale financial research (40+ results) with full content
+            - exa_earnings_reports: Earnings calls and quarterly reports with full analysis
+            - exa_financial_keyword: Precise search for specific financial metrics and ratios
+            - exa_find_similar_financial: Cross-verification through similar financial documents
+            - tavily_urgent_market_updates: ONLY for urgent market news (use minimally)
 
-            Use multiple financial data sources to cross-verify findings.
-            Focus on material financial information and red flags.
-            Provide quantitative analysis with specific metrics and ratios.
-            Always cite sources for financial data and filings.
+            FINANCIAL ANALYSIS STRATEGY (EXA-DOMINATED):
+            1. Start with exa_financial_comprehensive for broad financial landscape analysis
+            2. Use exa_sec_filings_neural for deep dive into official SEC documents with full content
+            3. Use exa_earnings_reports for detailed earnings analysis and management commentary
+            4. Use exa_financial_keyword for specific metrics, ratios, or technical financial terms
+            5. Use exa_find_similar_financial to expand analysis through similar company comparisons
+            6. ONLY use tavily_urgent_market_updates for breaking market news (last resort)
+            7. Always leverage full content extraction and highlights for comprehensive financial analysis
+
+            KEY FOCUS AREAS:
+            - Financial Statements: Revenue, profit margins, cash flow, debt levels
+            - SEC Filings: Material agreements, risk factors, management discussion
+            - Market Performance: Stock performance, valuation metrics, analyst ratings
+            - Financial Health: Liquidity ratios, debt-to-equity, working capital
+            - Red Flags: Audit issues, restatements, regulatory actions, covenant violations
+
+            QUALITY STANDARDS:
+            - Prioritize official SEC filings over secondary sources
+            - Extract specific financial metrics and ratios when available
+            - Note filing dates and ensure data recency
+            - Cross-verify key financial data from multiple sources
+            - Flag any inconsistencies or concerning trends
             """,
             name="financial_agent"
         )

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     openai_api_key: str | None = Field(None, env="OPENAI_API_KEY")
     anthropic_api_key: str | None = Field(None, env="ANTHROPIC_API_KEY")
     exa_api_key: str | None = Field(None, env="EXA_API_KEY")
+    tavily_api_key: str | None = Field(None, env="TAVILY_API_KEY")
     langsmith_api_key: str | None = Field(None, env="LANGSMITH_API_KEY")
 
     # Database - Optional for local development
@@ -75,6 +76,11 @@ class Settings(BaseSettings):
     def has_anthropic_key(self) -> bool:
         """Check if Anthropic API key is available"""
         return bool(self.anthropic_api_key and self.anthropic_api_key != "your_anthropic_key_here")
+
+    @property
+    def has_tavily_key(self) -> bool:
+        """Check if Tavily API key is available"""
+        return bool(self.tavily_api_key and self.tavily_api_key != "your_tavily_key_here")
 
     @property
     def has_langsmith_key(self) -> bool:

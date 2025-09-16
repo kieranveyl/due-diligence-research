@@ -7,54 +7,72 @@ name = "due-diligence-exa"
 version = "0.1.0"
 description = "Multi-Agent Due Diligence System built with LangGraph"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "Due Diligence Team", email = "team@example.com"},
 ]
 keywords = ["langgraph", "multi-agent", "due-diligence", "ai"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
-    # Core LangGraph Stack
-    "langgraph==0.6.7",
-    "langgraph-supervisor==0.0.29",
-    "langgraph-checkpoint-postgres==2.0.23",
-    "langgraph-checkpoint-sqlite==2.0.11",
-    "langchain==0.3.27",
-    "langchain-openai==0.3.32",
-    "langchain-anthropic==0.2.3",
-    "langchain-exa==0.3.1",
-    # API & Web Framework
-    "fastapi==0.115.0",
-    "uvicorn[standard]==0.30.0",
-    "pydantic==2.11.9",
+    # Core LangGraph Stack - Current stable versions
+    "langgraph>=0.6.7,<0.7.0",
+    "langgraph-checkpoint-postgres>=2.0.23",
+    "langgraph-checkpoint-sqlite>=2.0.11",
+    "langchain>=0.3.27",
+    "langchain-openai>=0.2.5,<1.0.0",
+    "langchain-anthropic>=0.2.3",
+    
+    # LangChain Tool Integrations - Partner packages
+    "langchain-exa>=0.3.0,<1.0.0",
+    "langchain-community>=0.3.0",  # Contains Tavily integration
+    "tavily-python>=0.7.0,<1.0.0",  # Tavily client library
+    
+    # API & Web Framework - Updated for v2.0
+    "fastapi>=0.116.0,<1.0.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.9.0,<3.0.0",
     "pydantic-settings>=2.0.0",
-    "httpx==0.27.0",
-    # Database & Storage
-    "asyncpg==0.29.0",
-    "redis==5.0.1",
-    "sqlalchemy[asyncio]==2.0.23",
-    # Vector Database
-    "chromadb==0.5.0",
+    "httpx>=0.27.0,<1.0.0",
+    
+    # Database & Storage - Updated for v2.0
+    "asyncpg>=0.30.0,<1.0.0",
+    "aiosqlite>=0.20.0,<1.0.0",
+    "redis>=5.0.1",
+    "sqlalchemy[asyncio]>=2.0.23",
+    
+    # Security & Monitoring - New for v2.0
+    "cryptography>=42.0.0,<43.0.0",
+    "structlog>=23.2.0,<24.0.0",
+    "prometheus-client>=0.20.0,<1.0.0",
+    
+    # CLI Framework - Updated for v2.0
+    "typer>=0.12.0,<1.0.0",
+    "rich>=13.9.0,<14.0.0",  # Use latest 13.x until 14.0 is stable
+    "click>=8.1.7,<9.0.0",
+    
+    # Document Processing - Updated
+    "pypandoc>=1.13,<2.0.0",
+    "weasyprint>=62.0,<63.0.0",
+    
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "tenacity>=8.1.0,<9.0.0",
+    "requests>=2.31.0,<3.0.0",
+    
     # Monitoring & Observability
     "langsmith>=0.3.45",
-    "opentelemetry-api==1.25.0",
-    "prometheus-client==0.20.0",
-    # Utilities
-    "python-dotenv==1.0.0",
-    "tenacity>=8.1.0,<9.0.0",
-    "structlog==25.4.0",
-    # CLI Framework
-    "typer==0.9.0",
-    "rich>=13.0.0,<14.0.0",
-    "aiosqlite>=0.21.0",
+    "opentelemetry-api>=1.25.0",
 ]
 
 [project.optional-dependencies]
@@ -97,7 +115,7 @@ addopts = [
 
 [tool.black]
 line-length = 88
-target-version = ["py311"]
+target-version = ["py313"]
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -120,7 +138,7 @@ line_length = 88
 known_first_party = ["src"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.13"
 check_untyped_defs = true
 disallow_any_generics = true
 disallow_incomplete_defs = true
@@ -130,7 +148,7 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py313"
 line-length = 88
 select = [
     "E",  # pycodestyle errors

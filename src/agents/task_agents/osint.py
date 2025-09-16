@@ -1,6 +1,8 @@
 from typing import Any
 
 from langchain_core.tools import tool
+from langchain_exa import ExaSearchResults, ExaFindSimilarResults
+from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
 
@@ -21,65 +23,137 @@ class OSINTAgent:
     def _initialize_tools(self):
         tools = []
 
-        # Add OSINT research tools
+        # Add comprehensive Exa tools for OSINT investigation
+        if settings.has_exa_key:
+            try:
+                # Comprehensive OSINT neural search across all digital platforms
+                tools.append(ExaSearchResults(
+                    name="exa_osint_comprehensive",
+                    description="Large-scale OSINT investigation with full content across social media, forums, and digital platforms. For thorough digital footprint analysis.",
+                    num_results=40,
+                    api_key=settings.exa_api_key,
+                    include_domains=[
+                        "linkedin.com", "twitter.com", "facebook.com", "instagram.com",
+                        "youtube.com", "tiktok.com", "reddit.com", "github.com",
+                        "stackoverflow.com", "medium.com", "crunchbase.com",
+                        "angellist.com", "producthunt.com", "hackernews.com"
+                    ],
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Public records and directories with full content
+                tools.append(ExaSearchResults(
+                    name="exa_public_records",
+                    description="Deep search of public records, business directories, and government databases with full content extraction",
+                    num_results=25,
+                    api_key=settings.exa_api_key,
+                    include_domains=[
+                        "whitepages.com", "spokeo.com", "sec.gov", "irs.gov",
+                        "census.gov", "usa.gov", "corporationwiki.com", "bizapedia.com",
+                        "manta.com", "opencorporates.com", "fec.gov"
+                    ],
+                    type="auto",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # Reputation and news monitoring with sentiment analysis
+                tools.append(ExaSearchResults(
+                    name="exa_reputation_monitoring",
+                    description="Comprehensive reputation monitoring with full article content and sentiment analysis",
+                    num_results=30,
+                    api_key=settings.exa_api_key,
+                    include_domains=[
+                        "reuters.com", "bloomberg.com", "wsj.com", "forbes.com",
+                        "techcrunch.com", "businesswire.com", "prnewswire.com",
+                        "glassdoor.com", "trustpilot.com", "bbb.org", "yelp.com",
+                        "ripoffreport.com", "complaintsboard.com"
+                    ],
+                    type="neural",
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                # OSINT keyword search for precise terms
+                tools.append(ExaSearchResults(
+                    name="exa_osint_keyword",
+                    description="Precise keyword search for specific names, usernames, emails, or identifiers in OSINT investigation",
+                    num_results=15,
+                    api_key=settings.exa_api_key,
+                    type="keyword",
+                    text_contents_options=True
+                ))
+                
+                # Find similar digital assets and related entities
+                tools.append(ExaFindSimilarResults(
+                    name="exa_find_similar_digital_assets",
+                    description="Find similar digital assets, related entities, and connected online presence for expanded OSINT investigation",
+                    num_results=12,
+                    api_key=settings.exa_api_key,
+                    text_contents_options=True,
+                    highlights=True
+                ))
+                
+                print("✅ Advanced Exa OSINT tool suite initialized successfully")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Exa OSINT tools: {e}")
+
+        # Add minimal Tavily for urgent OSINT updates only
+        if settings.has_tavily_key:
+            try:
+                tools.append(TavilySearchResults(
+                    name="tavily_urgent_osint",
+                    description="ONLY for urgent real-time OSINT updates and breaking developments within hours. Use minimally - Exa is primary source.",
+                    max_results=3,
+                    api_wrapper_kwargs={"api_key": settings.tavily_api_key}
+                ))
+                print("✅ Tavily auxiliary OSINT tool initialized")
+            except Exception as e:
+                print(f"Warning: Failed to initialize Tavily OSINT tool: {e}")
+
+        # Add specialized OSINT tools that require custom integrations (mock implementations)
         @tool
-        def social_media_search(entity_name: str, platforms: str = "linkedin,twitter,facebook") -> str:
-            """Search social media platforms for entity presence and activity"""
-            # Mock implementation - would integrate with social media APIs
-            return f"Social media search for {entity_name} on platforms: {platforms}"
+        def domain_technical_analysis(domain: str) -> str:
+            """Analyze domain registration, DNS records, hosting details, and technical infrastructure"""
+            # Mock implementation - would integrate with WHOIS, DNS lookup, and hosting analysis tools
+            return f"Mock domain technical analysis for: {domain} - Registrar: GoDaddy, Hosting: AWS, SSL: Valid"
+
+        @tool  
+        def breach_security_monitoring(entity_identifier: str, search_type: str = "email") -> str:
+            """Check for data breaches, exposed credentials, and security incidents"""
+            # Mock implementation - would integrate with HaveIBeenPwned, breach databases
+            return f"Mock breach monitoring for {entity_identifier} ({search_type}) - Status: No breaches found"
 
         @tool
-        def domain_analysis(domain: str) -> str:
-            """Analyze domain registration, hosting, and technical details"""
-            # Mock implementation - would integrate with WHOIS and domain analysis tools
-            return f"Domain analysis for: {domain}"
-
-        @tool
-        def public_records_search(entity_name: str, location: str = "") -> str:
-            """Search public records, directories, and government databases"""
-            # Mock implementation - would integrate with public records APIs
-            return f"Public records search for {entity_name} in {location}"
-
-        @tool
-        def breach_database_search(email_domain: str) -> str:
-            """Check for data breaches and exposed information"""
-            # Mock implementation - would integrate with breach monitoring services
-            return f"Breach database search for domain: {email_domain}"
-
-        @tool
-        def news_sentiment_analysis(entity_name: str, timeframe: str = "1year") -> str:
-            """Analyze news sentiment and media coverage"""
-            # Mock implementation - would integrate with news analysis APIs
-            return f"News sentiment analysis for {entity_name} over {timeframe}"
-
-        @tool
-        def digital_footprint_mapping(entity_name: str) -> str:
-            """Map digital presence across websites, forums, and platforms"""
-            # Mock implementation - would integrate with web crawling and analysis tools
-            return f"Digital footprint mapping for: {entity_name}"
-
-        @tool
-        def reputation_monitoring(entity_name: str, sources: str = "all") -> str:
-            """Monitor online reputation across review sites and forums"""
-            # Mock implementation - would integrate with reputation monitoring services
-            return f"Reputation monitoring for {entity_name} across {sources}"
-
-        @tool
-        def dark_web_monitoring(entity_name: str) -> str:
-            """Monitor dark web mentions and potential threats"""
+        def dark_web_threat_monitoring(entity_name: str, monitoring_scope: str = "standard") -> str:
+            """Monitor dark web forums, markets, and underground sources for entity mentions and threats"""
             # Mock implementation - would integrate with dark web monitoring services
-            return f"Dark web monitoring for: {entity_name}"
+            return f"Mock dark web monitoring for {entity_name} (scope: {monitoring_scope}) - No threats detected"
+
+        @tool
+        def digital_forensics_analysis(target_identifier: str, analysis_type: str = "passive") -> str:
+            """Perform digital forensics analysis on digital assets and online presence"""
+            # Mock implementation - would integrate with forensics tools and metadata analysis
+            return f"Mock digital forensics analysis for {target_identifier} (type: {analysis_type}) - Clean profile"
 
         tools.extend([
-            social_media_search,
-            domain_analysis,
-            public_records_search,
-            breach_database_search,
-            news_sentiment_analysis,
-            digital_footprint_mapping,
-            reputation_monitoring,
-            dark_web_monitoring
+            domain_technical_analysis, 
+            breach_security_monitoring, 
+            dark_web_threat_monitoring,
+            digital_forensics_analysis
         ])
+
+        # Add fallback tools if no APIs available
+        if not any(tool.name in ['social_media_osint', 'public_records_osint'] for tool in tools):
+            @tool
+            def dummy_osint_search(query: str, osint_type: str = "general") -> str:
+                """Dummy OSINT search tool for development/testing"""
+                return f"Mock OSINT search results for: {query} | Type: {osint_type}"
+
+            tools.append(dummy_osint_search)
+            print("⚠️ Using dummy OSINT tools - configure API keys for real functionality")
 
         return tools
 
@@ -87,24 +161,48 @@ class OSINTAgent:
         return create_react_agent(
             model=self.model,
             tools=self.tools,
-            prompt="""You are an Open Source Intelligence (OSINT) specialist focused on comprehensive digital investigations.
+            prompt="""You are an Open Source Intelligence (OSINT) specialist focused on comprehensive digital investigations using publicly available information.
 
-            Your responsibilities:
-            1. Conduct thorough social media and digital presence analysis
-            2. Map digital footprints across platforms and websites
-            3. Analyze domain ownership, hosting, and technical infrastructure
-            4. Search public records, directories, and government databases
-            5. Monitor online reputation and sentiment analysis
-            6. Identify data breaches and exposed information
-            7. Investigate dark web mentions and potential threats
-            8. Assess cybersecurity posture and digital risks
+            AVAILABLE TOOLS:
+            - exa_osint_comprehensive: Large-scale OSINT investigation (40+ results) with full content across all digital platforms
+            - exa_public_records: Deep public records search with full content from directories and government databases
+            - exa_reputation_monitoring: Comprehensive reputation monitoring (30+ results) with full content and sentiment analysis
+            - exa_osint_keyword: Precise keyword search for specific names, usernames, emails, or identifiers
+            - exa_find_similar_digital_assets: Similar digital assets and related entities for expanded investigation
+            - tavily_urgent_osint: ONLY for urgent real-time OSINT updates (use minimally)
+            - domain_technical_analysis: Analyze domain registration, DNS records, and hosting infrastructure
+            - breach_security_monitoring: Check for data breaches, exposed credentials, and security incidents
+            - dark_web_threat_monitoring: Monitor underground sources for entity mentions and potential threats
+            - digital_forensics_analysis: Perform passive digital forensics analysis on online presence
 
-            Use multiple OSINT sources and techniques for comprehensive coverage.
-            Focus on publicly available information only - no illegal access.
-            Verify information across multiple independent sources.
-            Pay attention to operational security and attribution.
-            Document methodology and source reliability.
-            Identify potential security risks and digital threats.
+            OSINT INVESTIGATION STRATEGY (EXA-DOMINATED):
+            1. Start with exa_osint_comprehensive for broad digital footprint analysis with full content
+            2. Use exa_public_records for deep dive into official records and business information
+            3. Use exa_reputation_monitoring for comprehensive reputation analysis with full articles
+            4. Use exa_osint_keyword for precise searches of specific identifiers or terms
+            5. Use exa_find_similar_digital_assets to expand investigation to related entities
+            6. Use domain_technical_analysis for technical infrastructure assessment
+            7. Use breach_security_monitoring to identify security incidents and data exposure
+            8. Use dark_web_threat_monitoring for threat intelligence and underground mentions
+            9. Use digital_forensics_analysis for detailed technical assessment when needed
+            10. ONLY use tavily_urgent_osint for immediate breaking developments (last resort)
+            11. Always leverage full content extraction and highlights for comprehensive OSINT analysis
+
+            KEY INVESTIGATION AREAS:
+            - Digital Presence: Social media profiles, professional networks, online activity patterns
+            - Public Records: Business registrations, government filings, directory listings
+            - Reputation Intelligence: News coverage, reviews, sentiment analysis, controversy assessment
+            - Technical Infrastructure: Domain analysis, hosting providers, SSL certificates, DNS records
+            - Security Posture: Data breaches, exposed information, credential leaks, security incidents
+            - Threat Intelligence: Dark web mentions, threat actor discussions, potential risks
+
+            OPERATIONAL SECURITY & ETHICS:
+            - Use only publicly available information - no unauthorized access or illegal methods
+            - Maintain operational security to avoid attribution or detection
+            - Verify findings across multiple independent sources before reporting
+            - Document methodology and assess source reliability for each finding
+            - Respect privacy laws and ethical boundaries in all investigations
+            - Flag any suspicious or concerning activity patterns discovered
             """,
             name="osint_agent"
         )
