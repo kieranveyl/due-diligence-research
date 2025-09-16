@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for the Legal Agent with LangChain integrations
+Test script for the OSINT Agent with LangChain integrations
 """
 
 import asyncio
@@ -9,17 +9,17 @@ import sys
 from pathlib import Path
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from src.agents.task_agents.legal import LegalAgent
+from src.agents.task_agents.osint import OSINTAgent
 from src.config.settings import settings
 from src.state.definitions import ResearchTask
 
 
-async def test_legal_agent():
-    """Test the Legal Agent initialization and tool setup"""
+async def test_osint_agent():
+    """Test the OSINT Agent initialization and tool setup"""
     
-    print("⚖️ Testing Legal Agent v2.0 with LangChain integrations...")
+    print("🔍 Testing OSINT Agent v2.0 with LangChain integrations...")
     print()
     
     # Set temporary API key for testing if not present
@@ -34,14 +34,14 @@ async def test_legal_agent():
     
     # Test 1: Agent initialization
     try:
-        agent = LegalAgent()
-        print("✅ Legal Agent initialized successfully")
+        agent = OSINTAgent()
+        print("✅ OSINT Agent initialized successfully")
         print(f"   Model: {agent.model_name}")
         print(f"   Tools available: {len(agent.tools)}")
         for i, tool in enumerate(agent.tools):
             print(f"   {i+1}. {tool.name}: {tool.description}")
     except Exception as e:
-        print(f"❌ Failed to initialize Legal Agent: {e}")
+        print(f"❌ Failed to initialize OSINT Agent: {e}")
         return
     
     print()
@@ -56,47 +56,47 @@ async def test_legal_agent():
     # Test 3: Agent creation (LangGraph)
     try:
         langgraph_agent = agent.create_agent()
-        print("✅ LangGraph legal agent created successfully")
-        print(f"   Agent name: legal_agent")
+        print("✅ LangGraph OSINT agent created successfully")
+        print(f"   Agent name: osint_agent")
     except Exception as e:
-        print(f"❌ Failed to create LangGraph legal agent: {e}")
+        print(f"❌ Failed to create LangGraph OSINT agent: {e}")
         return
     
     print()
     
     # Test 4: Mock task execution
     try:
-        # Create a legal analysis task
+        # Create an OSINT investigation task
         task = ResearchTask(
-            description="Legal analysis of Tesla Inc including litigation, compliance, and sanctions screening",
-            assigned_agent="legal",
+            description="OSINT investigation of Tesla Inc including social media presence, digital footprint, and reputation analysis",
+            assigned_agent="osint",
             output_schema={
-                "litigation_status": "str", 
-                "sanctions_screening": "str", 
-                "compliance_status": "str",
-                "regulatory_issues": "list",
-                "legal_risk_assessment": "str"
+                "digital_presence": "str", 
+                "social_media_profiles": "list", 
+                "reputation_assessment": "str",
+                "security_findings": "list",
+                "threat_indicators": "str"
             }
         )
         
-        print("⚖️ Testing legal task execution...")
+        print("🔍 Testing OSINT task execution...")
         print(f"   Task: {task.description}")
         
         # Execute the task
-        result = await agent.execute_task(task, context="Due diligence legal analysis")
+        result = await agent.execute_task(task, context="Due diligence OSINT investigation")
         
-        print("✅ Legal task executed successfully")
+        print("✅ OSINT task executed successfully")
         print(f"   Task ID: {result['task_id']}")
         print(f"   Confidence: {result['confidence']}")
         print(f"   Citations: {len(result['citations'])} sources")
         print(f"   Results keys: {list(result['results'].keys())}")
         
     except Exception as e:
-        print(f"⚠️ Legal task execution test failed (expected without API keys): {e}")
+        print(f"⚠️ OSINT task execution test failed (expected without API keys): {e}")
     
     print()
-    print("🎉 Legal Agent testing completed!")
+    print("🎉 OSINT Agent testing completed!")
 
 
 if __name__ == "__main__":
-    asyncio.run(test_legal_agent())
+    asyncio.run(test_osint_agent())
