@@ -143,7 +143,7 @@ async def debug_workflow():
             return {"error": "Workflow not initialized"}
 
         # Test checkpointer
-        checkpointer = await test_workflow._ensure_compiled()
+        await test_workflow._ensure_compiled()
 
         return {
             "status": "success",

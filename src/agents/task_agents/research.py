@@ -133,7 +133,7 @@ class ResearchAgent:
 
             FOCUS AREAS:
             - Corporate information: SEC filings, financial reports, business profiles
-            - Legal matters: Court records, regulatory actions, compliance status  
+            - Legal matters: Court records, regulatory actions, compliance status
             - Recent developments: News, press releases, market updates
             - Background verification: Company history, leadership, operations
 
