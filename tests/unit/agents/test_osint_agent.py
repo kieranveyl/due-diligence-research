@@ -54,7 +54,7 @@ async def test_osint_agent():
 
     # Test 3: Agent creation (LangGraph)
     try:
-        langgraph_agent = agent.create_agent()
+        agent.create_agent()
         print("✅ LangGraph OSINT agent created successfully")
         print("   Agent name: osint_agent")
     except Exception as e:

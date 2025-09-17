@@ -54,7 +54,7 @@ async def test_verification_agent():
 
     # Test 3: Agent creation (LangGraph)
     try:
-        langgraph_agent = agent.create_agent()
+        agent.create_agent()
         print("✅ LangGraph verification agent created successfully")
         print("   Agent name: verification_agent")
     except Exception as e:

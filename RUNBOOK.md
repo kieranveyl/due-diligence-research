@@ -1,6 +1,7 @@
 # Due Diligence System v2.0 - Operational Runbook
 
 ## Table of Contents
+
 1. [System Overview](#system-overview)
 2. [Prerequisites](#prerequisites)
 3. [Installation & Setup](#installation--setup)
@@ -20,6 +21,7 @@
 The Due Diligence System v2.0 is a multi-agent AI platform for comprehensive business intelligence and risk assessment. Built on Python 3.13 with LangGraph orchestration, it leverages **Exa AI as the primary search engine** with minimal Tavily backup for breaking news.
 
 ### Architecture Highlights
+
 - **5 Specialized Agents**: Research, Financial, Legal, OSINT, Verification
 - **Exa-First Design**: 95%+ searches use Exa's neural, auto, and keyword capabilities
 - **LangChain Integration**: Full content extraction with highlights
@@ -31,6 +33,7 @@ The Due Diligence System v2.0 is a multi-agent AI platform for comprehensive bus
 ## Prerequisites
 
 ### System Requirements
+
 - **Python**: 3.10+ (3.13 recommended)
 - **UV Package Manager**: Latest version
 - **Database**: PostgreSQL or SQLite
@@ -39,6 +42,7 @@ The Due Diligence System v2.0 is a multi-agent AI platform for comprehensive bus
 - **Storage**: 2GB+ free space
 
 ### API Keys Required
+
 - **OpenAI API Key**: For LLM orchestration
 - **Exa API Key**: Primary search engine
 - **Tavily API Key**: Auxiliary breaking news (optional)
@@ -49,12 +53,14 @@ The Due Diligence System v2.0 is a multi-agent AI platform for comprehensive bus
 ## Installation & Setup
 
 ### 1. Clone Repository
+
 ```bash
 git clone <repository-url>
-cd due-diligence-exa/.conductor/migration-v2
+cd due-diligence-exa
 ```
 
 ### 2. Install UV Package Manager
+
 ```bash
 # macOS/Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -64,6 +70,7 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 ### 3. Install Dependencies
+
 ```bash
 # Install all dependencies using UV
 uv sync
@@ -73,6 +80,7 @@ uv run python --version  # Should show Python 3.13.x
 ```
 
 ### 4. Verify Installation
+
 ```bash
 # Test core imports
 uv run python -c "
@@ -87,6 +95,7 @@ print('✅ Installation successful!')
 ## Configuration
 
 ### 1. Environment Variables
+
 Create `.env` file in project root:
 
 ```bash
@@ -110,6 +119,7 @@ AUDIT_LOG_LEVEL=INFO
 ```
 
 ### 2. Generate Encryption Key
+
 ```bash
 uv run python -c "
 import secrets
@@ -118,12 +128,13 @@ print('SESSION_ENCRYPTION_KEY=' + secrets.token_hex(32))
 ```
 
 ### 3. Configuration Validation
+
 ```bash
 # Validate all API keys and settings
 uv run python -c "
 from src.config.settings import settings
 print('✅ OpenAI:', '✅' if settings.has_openai_key else '❌')
-print('✅ Exa:', '✅' if settings.has_exa_key else '❌') 
+print('✅ Exa:', '✅' if settings.has_exa_key else '❌')
 print('✅ Tavily:', '✅' if settings.has_tavily_key else '❌')
 print('✅ Database:', '✅' if settings.postgres_url else '❌')
 "
@@ -134,6 +145,7 @@ print('✅ Database:', '✅' if settings.postgres_url else '❌')
 ## Running the System
 
 ### 1. CLI Interface
+
 ```bash
 # Show configuration
 uv run python -m src.cli.main config show
@@ -149,6 +161,7 @@ uv run python -m src.cli.main financial analyze "Tesla Inc" --output-format json
 ```
 
 ### 2. Individual Agent Testing
+
 ```bash
 # Test Research Agent (Exa-powered)
 uv run python test_research_agent.py
@@ -167,6 +180,7 @@ uv run python test_verification_agent.py
 ```
 
 ### 3. Full Workflow Execution
+
 ```bash
 # Run complete due diligence workflow
 uv run python -c "
@@ -187,11 +201,12 @@ asyncio.run(main())
 ```
 
 ### 4. Run Tests
+
 ```bash
 # Unit tests
 uv run pytest tests/unit/ -v
 
-# Integration tests  
+# Integration tests
 uv run pytest tests/integration/ -v
 
 # All tests
@@ -207,6 +222,7 @@ uv run pytest -v
 All agents now prioritize **Exa AI** for 95%+ of searches, with Tavily relegated to auxiliary breaking news only.
 
 #### Research Agent
+
 ```python
 # 5 Exa Tools + 1 Minimal Tavily
 - exa_neural_search (15 results, full content + highlights)
@@ -218,6 +234,7 @@ All agents now prioritize **Exa AI** for 95%+ of searches, with Tavily relegated
 ```
 
 #### Financial Agent
+
 ```python
 # 5 Exa Tools + 1 Minimal Tavily
 - exa_sec_filings_neural (20 results, SEC focus)
@@ -229,6 +246,7 @@ All agents now prioritize **Exa AI** for 95%+ of searches, with Tavily relegated
 ```
 
 #### Legal Agent
+
 ```python
 # 5 Exa Tools + 1 Minimal Tavily
 - exa_legal_comprehensive (35 results, full legal landscape)
@@ -240,6 +258,7 @@ All agents now prioritize **Exa AI** for 95%+ of searches, with Tavily relegated
 ```
 
 #### OSINT Agent
+
 ```python
 # 5 Exa Tools + 1 Minimal Tavily
 - exa_osint_comprehensive (40 results, digital footprint)
@@ -251,6 +270,7 @@ All agents now prioritize **Exa AI** for 95%+ of searches, with Tavily relegated
 ```
 
 #### Verification Agent
+
 ```python
 # 5 Exa Tools + 1 Minimal Tavily
 - exa_authoritative_comprehensive (30 results, official sources)
@@ -262,6 +282,7 @@ All agents now prioritize **Exa AI** for 95%+ of searches, with Tavily relegated
 ```
 
 ### Agent Initialization
+
 ```python
 from src.agents.task_agents.research import ResearchAgent
 
@@ -279,6 +300,7 @@ for tool in agent.tools:
 ### Exa AI Integration (Primary)
 
 #### Features Utilized
+
 - **Neural Search**: Semantic understanding of queries
 - **Auto Search**: Intelligent search strategy selection
 - **Keyword Search**: Precise term matching
@@ -288,6 +310,7 @@ for tool in agent.tools:
 - **Domain Filtering**: Authoritative source targeting
 
 #### Configuration Example
+
 ```python
 from langchain_exa import ExaSearchResults
 
@@ -321,6 +344,7 @@ tavily_tool = TavilySearchResults(
 ```
 
 ### OpenAI Integration
+
 ```python
 from langchain_openai import ChatOpenAI
 
@@ -338,6 +362,7 @@ model = ChatOpenAI(
 ### Common Issues
 
 #### 1. API Key Issues
+
 ```bash
 # Error: "No module named 'langchain_exa'"
 uv sync  # Reinstall dependencies
@@ -348,6 +373,7 @@ uv run python -c "from src.config.settings import settings; print(settings.exa_a
 ```
 
 #### 2. Agent Initialization Failures
+
 ```bash
 # Error: "Using dummy tools - configure API keys"
 # This is expected when API keys are missing
@@ -359,16 +385,18 @@ uv run python test_research_agent.py
 ```
 
 #### 3. Database Connection Issues
+
 ```bash
 # SQLite (default)
 mkdir -p data
 export POSTGRES_URL=sqlite:///data/due_diligence.db
 
-# PostgreSQL 
+# PostgreSQL
 export POSTGRES_URL=postgresql://user:pass@localhost:5432/dbname
 ```
 
 #### 4. Workflow Compilation Errors
+
 ```python
 # Ensure async compilation
 workflow = DueDiligenceWorkflow()
@@ -376,6 +404,7 @@ compiled = await workflow._ensure_compiled()
 ```
 
 ### Debug Mode
+
 ```bash
 # Enable debug logging
 export LOG_LEVEL=DEBUG
@@ -383,6 +412,7 @@ uv run python -m src.cli.main research run "test query"
 ```
 
 ### Performance Issues
+
 ```bash
 # Check tool performance
 uv run python -c "
@@ -401,6 +431,7 @@ print(f'Time: {time.time() - start:.2f}s')
 ## Monitoring & Logging
 
 ### Security Monitoring
+
 ```python
 from src.security.monitoring import SecurityMonitor
 
@@ -413,6 +444,7 @@ await monitor.log_security_event(
 ```
 
 ### Audit Logging
+
 ```python
 from src.security.audit import AuditLogger
 
@@ -426,6 +458,7 @@ await audit.log_action(
 ```
 
 ### Performance Metrics
+
 ```bash
 # View agent performance
 uv run python -c "
@@ -446,6 +479,7 @@ asyncio.run(benchmark())
 ## Security Operations
 
 ### Session Encryption
+
 ```python
 from src.security.encryption import SessionEncryption
 
@@ -455,6 +489,7 @@ decrypted_data = await encryption.decrypt_session_data(encrypted_data)
 ```
 
 ### API Key Management
+
 ```bash
 # Rotate API keys
 # 1. Generate new keys from providers
@@ -466,6 +501,7 @@ uv run python -c "from src.config.settings import settings; print('Keys loaded:'
 ```
 
 ### Security Audit
+
 ```python
 # Run security checks
 from src.security.audit import AuditLogger
@@ -480,6 +516,7 @@ print(f"Security events in last 24h: {len(recent_events)}")
 ## Maintenance
 
 ### Daily Operations
+
 ```bash
 # 1. Check system health
 uv run pytest tests/unit/test_agents.py -v
@@ -492,6 +529,7 @@ tail -f logs/due_diligence.log
 ```
 
 ### Weekly Maintenance
+
 ```bash
 # 1. Update dependencies
 uv sync --upgrade
@@ -508,7 +546,7 @@ from src.security.audit import AuditLogger
 import asyncio
 
 async def audit():
-    logger = AuditLogger() 
+    logger = AuditLogger()
     events = await logger.get_recent_events(hours=168)  # 1 week
     print(f'Total events: {len(events)}')
 
@@ -517,6 +555,7 @@ asyncio.run(audit())
 ```
 
 ### Backup & Recovery
+
 ```bash
 # 1. Backup database
 pg_dump due_diligence > backup_$(date +%Y%m%d).sql
@@ -529,6 +568,7 @@ tar -czf config_backup_$(date +%Y%m%d).tar.gz .env src/config/
 ```
 
 ### Scaling Operations
+
 ```bash
 # Monitor performance
 uv run python -c "
@@ -550,6 +590,7 @@ print(f'Disk: {psutil.disk_usage(\"/\").percent}%')
 ## Production Deployment Checklist
 
 ### Pre-Deployment
+
 - [ ] All API keys configured and validated
 - [ ] Database setup and migrations completed
 - [ ] Security encryption keys generated
@@ -560,6 +601,7 @@ print(f'Disk: {psutil.disk_usage(\"/\").percent}%')
 - [ ] Backup procedures in place
 
 ### Post-Deployment
+
 - [ ] Smoke tests completed
 - [ ] API connectivity verified
 - [ ] Agent functionality confirmed
@@ -573,11 +615,13 @@ print(f'Disk: {psutil.disk_usage(\"/\").percent}%')
 ## Support & Contact
 
 ### Internal Issues
+
 - Check logs: `logs/due_diligence.log`
 - Run diagnostics: `uv run pytest tests/unit/ -v`
 - Review configuration: `uv run python -m src.cli.main config show`
 
 ### External Dependencies
+
 - **Exa AI**: [docs.exa.ai](https://docs.exa.ai)
 - **OpenAI**: [platform.openai.com](https://platform.openai.com)
 - **Tavily**: [tavily.com](https://tavily.com)
@@ -585,4 +629,4 @@ print(f'Disk: {psutil.disk_usage(\"/\").percent}%')
 
 ---
 
-*This runbook covers the complete operational lifecycle of the Due Diligence System v2.0 with its Exa-first architecture. For technical implementation details, see the codebase documentation.*
+_This runbook covers the complete operational lifecycle of the Due Diligence System v2.0 with its Exa-first architecture. For technical implementation details, see the codebase documentation._

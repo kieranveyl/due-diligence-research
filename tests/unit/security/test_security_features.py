@@ -183,7 +183,7 @@ async def test_security_monitoring():
         print(f"   ✅ Security summary generated with {len(security_summary['recent_alerts'])} recent alerts")
 
         # Test alert creation (simulate abuse)
-        for i in range(5):
+        for _i in range(5):
             await monitor.check_security_event(
                 event_type=SecurityEventType.AUTHENTICATION_FAILED,
                 user_id="abuse-test-user",

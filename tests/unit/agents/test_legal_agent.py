@@ -54,7 +54,7 @@ async def test_legal_agent():
 
     # Test 3: Agent creation (LangGraph)
     try:
-        langgraph_agent = agent.create_agent()
+        agent.create_agent()
         print("✅ LangGraph legal agent created successfully")
         print("   Agent name: legal_agent")
     except Exception as e:

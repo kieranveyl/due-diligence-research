@@ -168,14 +168,6 @@ def run(entity_name, scope, output, format_type, no_interactive, confidence_thre
         return
 
     # Apply configuration overrides
-    final_config = {
-        "confidence_threshold": confidence_threshold or config.confidence_threshold,
-        "max_sources": max_sources or config.max_sources,
-        "timeout": timeout or config.timeout,
-        "model": model or config.model,
-        "parallel_tasks": parallel_tasks or config.parallel_tasks,
-        "format": format_type,
-    }
 
     # Generate output path
     report_path = generate_report_path(entity_name, config.default_output_dir, output)

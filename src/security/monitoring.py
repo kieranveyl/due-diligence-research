@@ -292,7 +292,7 @@ class SecurityMonitor:
                 # Clean old entries from rate windows
                 cutoff_time = datetime.now() - timedelta(hours=1)
 
-                for window_name, window in self.rate_windows.items():
+                for _window_name, window in self.rate_windows.items():
                     # Remove old entries
                     while window and window[0]["timestamp"] < cutoff_time:
                         window.popleft()

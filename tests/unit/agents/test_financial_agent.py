@@ -54,7 +54,7 @@ async def test_financial_agent():
 
     # Test 3: Agent creation (LangGraph)
     try:
-        langgraph_agent = agent.create_agent()
+        agent.create_agent()
         print("✅ LangGraph financial agent created successfully")
         print("   Agent name: financial_agent")
     except Exception as e:
