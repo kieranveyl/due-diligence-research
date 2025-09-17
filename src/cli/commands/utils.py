@@ -128,8 +128,8 @@ def check_system_health():
     if HAS_RICH:
         api_table = Table(title="API Keys Status")
         api_table.add_column("Service", style="bold")
-        api_table.add_column("Status", style="center")
-        api_table.add_column("Required", style="center")
+        api_table.add_column("Status", justify="center")
+        api_table.add_column("Required", justify="center")
 
         for service, is_valid in api_status.items():
             status_icon = "✅" if is_valid else "❌"
