@@ -37,6 +37,14 @@ class CheckpointerFactory:
         # Return both the checkpointer and context manager for lifecycle management
         return checkpointer, checkpointer_cm
 
+    @classmethod
+    async def cleanup(cls):
+        """Cleanup checkpointer resources"""
+        if cls._context_manager is not None:
+            await cls._context_manager.__aexit__(None, None, None)
+            cls._instance = None
+            cls._context_manager = None
+
     @staticmethod
     async def create_checkpointer():
         """Create appropriate checkpointer based on environment"""
