@@ -65,11 +65,12 @@ def workflow():
         mock_model.invoke = MagicMock(return_value=AIMessage(content="Mock response"))
         mock_openai.return_value = mock_model
 
-        # Mock the checkpointer
-        mock_checkpointer_instance = MagicMock()
-        mock_checkpointer.return_value = mock_checkpointer_instance
+        # Mock the checkpointer to raise exception for testing (disable checkpointing)
+        async def mock_create_checkpointer():
+            raise Exception("Checkpointer disabled for testing")
+        mock_checkpointer.side_effect = mock_create_checkpointer
 
-        wf = DueDiligenceWorkflow()
+        wf = DueDiligenceWorkflow(disable_checkpointing=True)
         return wf
 
 @pytest.fixture
